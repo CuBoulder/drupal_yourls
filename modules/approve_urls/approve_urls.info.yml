@@ -1,0 +1,8 @@
+name: Approve Pending URL Applications
+type: module
+description: A page to approve pending custom short URLs
+package: CU URL Shortener
+core: 8.x
+dependencies:
+  - drupal_yourls:drupal_yourls
+  - drupal_yourls:custom_urls

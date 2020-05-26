@@ -1,0 +1,5 @@
+approve-urls-view:
+  version: 1.x
+  css:
+    theme:
+      approve-urls-view.css: {}

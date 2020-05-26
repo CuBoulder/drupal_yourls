@@ -1,0 +1,7 @@
+drupal_yourls.settings:
+  path: /admin/config/services/yourls
+  defaults:
+    _form: \Drupal\drupal_yourls\Form\DrupalYOURLsConfigForm
+    _title: 'Drupal YOURLs Configuration'
+  requirements:
+    _permission: 'administer site configuration'

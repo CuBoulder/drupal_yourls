@@ -1,0 +1,34 @@
+{{ attach_library('custom_urls/custom-urls') }}
+<div class="container body-content">
+    <p> To get a custom short URL, you must request one for approval. If you would like a random short URL (ex. sho.rt/14), 
+        go to <a href="/random-urls"> Random URLs </a>. Once you submit the form, it will be reviewed and an email will sent
+        with the status of your application. If you have any questions, please email test@example.com. 
+    </p>
+    <p> When choosing a short URL, there are some guidelines it should follow:
+        <ul>
+            <li> Keep it one word </li>
+            <li> Easy to remember </li>
+            <li> Should describe the destination </li>
+            <li> Not too vague </li>
+        </ul>
+    </p>
+    <div id="custom-form">
+        <h3> Apply for a Custom Short URL </h3>
+        <form id="custom-url-form">
+            <label for="input-1"> Long URL </label>
+            <input id="input-1" name="url" placeholder="Long URL" type="text">
+            <label for=""> Short URL </label>
+            <input name="custom" placeholder="Short URL" type="text">
+            <label> CU Identikey </label>
+            <input name="identikey" placeholder="Identikey" type="text" value={{username}}>
+            <label> Site Title </label>
+            <input name="title" placeholder="Site Title" type="text">
+            <label> Reason For Applying </label>
+            <textarea name='desc' id="url-desc" rows="4" cols="50" placeholder="What will this short URL be used for?" ></textarea>
+            <br/>
+            <button type="submit"> Submit </button>
+        </form>
+        <div id="message" class="hidden">
+        </div>
+    </div>
+</div>

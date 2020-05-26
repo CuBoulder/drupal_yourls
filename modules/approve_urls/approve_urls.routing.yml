@@ -1,0 +1,30 @@
+approve_urls.approve:
+  path: 'application/delete/{nid}'
+  defaults:
+    _controller: '\Drupal\approve_urls\Controller\ApproveURLController::deleteApp'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      nid:
+        type: entity:node
+approve_urls.deny:
+  path: 'application/approve/{nid}'
+  defaults:
+    _controller: '\Drupal\approve_urls\Controller\ApproveURLController::approveApp'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      nid:
+        type: entity:node
+approve_urls.delete:
+  path: 'application/reject/{nid}'
+  defaults:
+    _controller: '\Drupal\approve_urls\Controller\ApproveURLController::rejectApp'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      nid:
+        type: entity:node

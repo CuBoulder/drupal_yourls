@@ -1,0 +1,10 @@
+custom-urls:
+  version: 1.x
+  footer: true
+  css:
+    theme:
+      customURLs.css: {}
+  js:
+    customURLs.js: {}
+  dependencies:
+    - core/jquery

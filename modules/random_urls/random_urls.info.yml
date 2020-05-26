@@ -1,0 +1,7 @@
+name: Random Short URLs
+type: module
+description: Creates Random URLs from a YOURLs install
+package: CU URL Shortener
+core: 8.x
+dependencies:
+  - drupal_yourls:drupal_yourls

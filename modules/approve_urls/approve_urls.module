@@ -1,0 +1,11 @@
+<?php
+
+/**
+* Implements hook_views_pre_render().
+* Add CSS to the pending approval view
+*/
+function approve_urls_views_pre_render(&$view) {
+    if($view->id() == 'short_url_applications'){
+        $view->attachment_before['#attached']['library'][] = 'approve_urls/approve-urls-view';
+    }
+}

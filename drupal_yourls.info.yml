@@ -1,0 +1,5 @@
+name: Drupal YOURLs
+type: module
+description: Connects Drupal to a YOURLs install via API
+package: CU URL Shortener
+core: 8.x

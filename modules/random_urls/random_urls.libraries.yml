@@ -1,0 +1,10 @@
+random-urls:
+  version: 1.x
+  footer: true
+  css:
+    theme:
+      randomURLs.css: {}
+  js:
+    randomURLs.js: {}
+  dependencies:
+    - core/jquery
