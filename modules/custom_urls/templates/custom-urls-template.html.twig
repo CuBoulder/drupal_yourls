@@ -14,20 +14,31 @@
     </p>
     <div id="custom-form">
         <h3> Apply for a Custom Short URL </h3>
+
         <form id="custom-url-form">
-            <label for="input-1"> Long URL </label>
-            <input id="input-1" name="url" placeholder="Long URL" type="text">
-            <label for=""> Short URL </label>
-            <input name="custom" placeholder="Short URL" type="text">
-            <label> CU Identikey </label>
-            <input name="identikey" placeholder="Identikey" type="text" value={{username}}>
-            <label> Site Title </label>
-            <input name="title" placeholder="Site Title" type="text">
-            <label> Reason For Applying </label>
-            <textarea name='desc' id="url-desc" rows="4" cols="50" placeholder="What will this short URL be used for?" ></textarea>
-            <br/>
-            <button type="submit"> Submit </button>
+            <div class="form-group">
+                <label for="input-1">Long URL</label>
+                <input type="text" name="url" class="form-control" id="input-1" placeholder="Long URL">
+            </div>
+            <div class="form-group">
+                <label for="input-2">Short URL</label>
+                <input type="text" name="custom" class="form-control" id="input-2" placeholder="Short URL">
+            </div>
+            <div class="form-group">
+                <label for="input-3">CU Identikey</label>
+                <input type="text" class="form-control" name="identikey" id="input-3" placeholder="CU Identikey" value={{username}}>
+            </div>
+            <div class="form-group">
+                <label for="input-4">Site Title</label>
+                <input type="text" class="form-control" name="title" id="input-4" placeholder="Site Name">
+            </div>
+            <div class="form-group">
+                <label for="url-desc"> Reason For Applying </label>
+                <textarea class="form-control" name='desc' id="url-desc" rows="4" placeholder="What will this short URL be used for?" ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+
         <div id="message" class="hidden">
         </div>
     </div>
