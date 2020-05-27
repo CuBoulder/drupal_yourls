@@ -3,21 +3,47 @@
 <div class="container body-content">
         <p> Getting a random short URL doesn't require any approval. The only restriction is that the URL must be from the colorado.edu domain. </p>
         <div class='input-container'>
-            <input id='new-url' type='text' placeholder='Shorten my URL' name='url'/>
-            <button id='shorten-button' type='submit'> Shorten! </button>
+            <input type="text" class="form-control" id="new-url" placeholder="Shorten my URL">
+            <button id='shorten-button' type='button' class='btn btn-primary'> Shorten! </button>
         </div>
         <div id='message-container'>
-            <p>  </p>
+            <!-- Mesage shows up here -->
         </div>
-        <h2> See all of the short URLs </h2>
+        <h2> View all of the Short URLs </h2>
         <p> Here are the current short URLs that have been created. You may search for a short URL and use one that already exists. </p>
         <div id="short-urls-list">
-            <!-- render table here -->
-            <div id='search-container'>
-                <button id='prev-button' value=0> &#x227A; Prev </button>
-                <button id='next-button' value=0> Next &#x227B; </button>
-                <input type='text' placeholder='Search for a keyword' id='search-keyword' />
-                <button id='search-button'> Search </button>
+        <div id='search-container'>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button id="prev-button" value=0 type="button" class="btn btn-primary"> &#x227A; Prev </button>
+                <button id="next-button" value=0 type="button" class="btn btn-primary"> Next &#x227B; </button>
             </div>
+            <input type='text' class="form-control" placeholder='Search for a keyword' id='search-keyword' />
+            <button id='search-button' type="button" class="btn btn-primary"> Search </button>
+        </div>
+        <div>
+        {# List the table results #}
+        {% if results|length > 0 %}
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">Short URL</th>
+                    <th scope="col">Original URL</th>
+                    <th scope="col">Clicks</th>
+                    </tr>
+                </thead>
+            <tbody>
+            {% for i in results %}
+                <tr>
+                    <th scope="row"> <a href= {{i.shorturl}} target="_blank"> {{i.shorturl}} </a></th>
+                    <td>{{i.url}}</td>
+                    <td>{{i.clicks}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+            {# If there are no results #}
+            {% else %}
+                <p> No Results </p>
+            {% endif %}
         </div>
 </div>

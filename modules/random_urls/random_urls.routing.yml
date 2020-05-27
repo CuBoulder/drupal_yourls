@@ -11,3 +11,9 @@ random_urls.getRandom:
     _controller: '\Drupal\random_urls\Controller\RandomURLController::getRandomURL'
   requirements:
     _permission: 'access content'
+random_urls.getShortURLs:
+  path: '/get-short-urls'
+  defaults:
+    _controller: '\Drupal\random_urls\Controller\RandomURLController::getAllShortURLs'
+  requirements:
+    _permission: 'access content'

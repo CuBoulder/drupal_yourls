@@ -2,7 +2,7 @@
 function random_urls_theme($existing, $type, $theme, $path){
   return [
     'random-urls-template' => [
-      'variables' => ['yourlsBase' => NULL, 'yourlsSecret'=> NULL],
+      'variables' => ['yourlsBase' => NULL, 'yourlsSecret'=> NULL, 'results' => NULL]
     ],
   ];
 }

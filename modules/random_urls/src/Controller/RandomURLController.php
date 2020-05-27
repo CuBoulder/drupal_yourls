@@ -4,6 +4,7 @@ namespace Drupal\random_urls\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use \GuzzleHttp\Exception\RequestException;
 
 class RandomURLController{	
     private $yourls_base_url, $yourls_secret;
@@ -42,9 +43,8 @@ class RandomURLController{
             // URL exists and comes from a colorado.edu domain
             try{
                 $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=shorturl&format=json&url={$url}";
-                // Call the API
-                \Drupal::logger('random_urls')->notice("url : $yourls_api");
-                $res = \Drupal::httpClient()->get($yourls_api);
+                // \Drupal::logger('random_urls')->notice("url : $yourls_api");
+                $res = \Drupal::httpClient()->get($yourls_api); //call the API
                 \Drupal::logger('random_urls')->notice("Adding a new random URL. View it on your YOURLs installation");
                 return new Response($res->getBody(), Response::HTTP_OK, ['content-type' => 'application/json']);
             }
@@ -59,16 +59,60 @@ class RandomURLController{
             return new Response(json_encode(['message' => $message]), Response::HTTP_OK, ['content-type' => 'application/json']);
         }
     }
-    //get all of the existing short urls from the API
-    public function getAllShortURLs($page = 0){
-        return true;
+    //get all of the existing short urls from the API or data about a certain url
+    private function getAllShortURLs($page = null, $keyword=null){
+        $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&format=json";
+        // get the results of existing short URLS
+        if($page){
+            try{
+                $yourls_api = "{$yourls_api}&action=stats&limit=10";
+                // \Drupal::logger('random_urls')->notice("url: {$yourls_api}");
+                $res = \Drupal::httpClient()->get($yourls_api);
+                $res = json_decode($res->getBody(), true);
+                return $res['links'];
+            }
+            catch(RequestException $e){
+                \Drupal::logger('random_urls')->error($e);
+                return [];
+            }
+        }
+        // get data about a specific short url
+        else if($keyword){
+            try{
+                $yourls_api = "{$yourls_api}&action=url-stats&shorturl={$keyword}";
+                $res = \Drupal::httpClient()->get($yourls_api);
+                $res = json_decode($res->getBody(), true);
+                // format the result
+                return ["link_1" => $res['link'] ];
+            }
+            catch(RequestException $e){
+                \Drupal::logger('random_urls')->error($e);
+                return []; // 404 or some other error
+            }
+        }
+        else{
+            return [];
+        }
     }
+
     //render the page to get a random URL
-    public function render(){
+    public function render(Request $req){
+        $results = [];
+        if($req->query->get('page')){
+            $results = $this->getAllShortURLs($req->query->get('page'), null);
+        }
+        else if($req->query->get('keyword')){
+            $results = $this->getAllShortURLs(null, $req->query->get('keyword'));
+        }
+        // if no query parameters, just return the top 10 results
+        else{
+            $results = $this->getAllShortURLs(1, null);
+        }
         return(array(
             '#theme' => 'random-urls-template',
             '#yourlsBase' => $this->yourls_base_url,
-            '#yourlsSecret' => $this->yourls_secret
+            '#yourlsSecret' => $this->yourls_secret,
+            '#results' => $results
         ));
     }
 }

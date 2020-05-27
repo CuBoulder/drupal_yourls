@@ -1,3 +1,21 @@
-p{
-    color: red;
+.input-container{
+    display: flex;
+    align-items: center;
+}
+#new-url{
+    flex-basis: 50%;
+    margin-right: 1em;
+}
+#message-container{
+    margin-bottom: 1em;
+}
+/* the search feature */
+#search-container{
+    display: flex;
+    margin-bottom: 1em;
+}
+#search-keyword{
+    width: 50%;
+    margin-left: 1em;
+    margin-right: 1em;
 }
