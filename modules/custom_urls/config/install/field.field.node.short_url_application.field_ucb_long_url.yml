@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ucb_long_url
+    - node.type.short_url_application
+  module:
+    - link
+id: node.short_url_application.field_ucb_long_url
+field_name: field_ucb_long_url
+entity_type: node
+bundle: short_url_application
+label: ucb_long_url
+description: 'Enter the URL you want to shorten'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 2
+field_type: link
