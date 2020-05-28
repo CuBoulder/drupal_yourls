@@ -58,7 +58,7 @@
                 message.innerHTML = "Added a new Application. An email will be sent to your colorado.edu account with the status of your application once its been reviewed.";
             }
             else{
-                message.innerHTML = "Couldn't add your Application. Please make sure your URL actually exists.";
+                message.innerHTML = res.message;
             }
         })
         .catch(err => console.error(err));

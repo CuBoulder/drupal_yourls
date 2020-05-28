@@ -1,6 +1,6 @@
 name: Custom URL Application
 type: module
-description: An application page for requesting a custom short URL
+description: An application page for requesting a custom short URL and content type schema
 package: CU URL Shortener
 core: 8.x
 dependencies:
