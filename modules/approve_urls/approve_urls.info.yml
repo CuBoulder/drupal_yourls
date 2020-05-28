@@ -1,6 +1,6 @@
 name: Approve Pending URL Applications
 type: module
-description: A page to approve pending custom short URLs
+description: A page to approve pending custom short URLs which contains a View
 package: CU URL Shortener
 core: 8.x
 dependencies:

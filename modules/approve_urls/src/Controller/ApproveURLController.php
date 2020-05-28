@@ -22,11 +22,10 @@ class ApproveURLController{
     public function deleteApp(Request $req, NodeInterface $nid = null){
         try{
             // delete the node from YOURLS (if exists) and from Drupal
-            \Drupal::logger('approve_urls')->notice("Deleting this entry: {$nid->id()}");
-            // $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=delete&shorturl={}&format=json";
-            // \Drupal::httpClient()->get($yourls_api);
-            // $res = json_decode($res, true);
-            // $nid->delete();
+            $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=delete&shorturl={}&format=json";
+            \Drupal::httpClient()->get($yourls_api);
+            //$res = json_decode($res->getBody(), true);
+            $nid->delete();
         }
         catch(RequestException $e){
             // If it gets here, the short URL to delete doesn't exist - returns a 404
@@ -40,19 +39,21 @@ class ApproveURLController{
 
     public function approveApp(Request $req, NodeInterface $nid = null){
         try{
-            \Drupal::logger('approve_urls')->notice("Getting node value: {$nid->get('field_ucb_short_url')->value}");
             // change the node's status to published and approved
-            // $nid->set();
-            // $nid->set();
-            // $nid->save();
-            // // generate a new custom short URL
-            // $long_url = $nid->get()->value;
-            // $keyword = $nid->get()->value;
-            // $title = $nid->get()->value;
-            // $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=shorturl&format=json&url={}&title={}&keyword={}";
-            // \Drupal::httpClient()->get($yourls_api);
-            // $res = json_decode($res, true);
-            // TODO: notify the user somehow
+            // 0 -> pending, 1 -> approved, 2 -> rejected
+            $nid->set('field_ucb_url_status', 1);
+            $nid->set('status', 1);
+            $nid->save();
+            // generate a new custom short URL
+            $long_url = urldecode($nid->get('field_ucb_long_url')->uri);
+            $keyword = urldecode($nid->get('field_ucb_short_url')->value);
+            $title = urldecode($nid->get('field_ucb_site_title')->value); 
+            // \Drupal::logger('approve_urls')->notice("keyword: {$keyword}, long url: {$long_url}, title: {$title}");
+            $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=shorturl&format=json&url={$long_url}&title={$title}&keyword={$keyword}";
+            \Drupal::httpClient()->get($yourls_api);
+            $res = json_decode($res->getBody(), true);
+            \Drupal::logger('approve_urls')->notice("Created new short URL: {$res['shorturl']}");
+            // TODO: notify the user about their new short url
         }
         catch(\Exception $e){
             \Drupal::logger('approve_urls')->error($e);
@@ -66,12 +67,13 @@ class ApproveURLController{
     public function rejectApp(Request $req, NodeInterface $nid = null){
         try{
             //Reject the application
-            $nid->set();
+            $nid->set('field_ucb_url_status', 2);
             $nid->save();
+            \Drupal::logger('approve_urls')->notice("Rejecting Application with ID: {$nid->id()}");
             // TODO: Figure out what to do about rejected applications 
         }
         catch(\Exception $e){
-            // do something
+            \Drupal::logger('approve_urls')->error($e);
         }
         finally{
             $viewRoute = $req->query->get('destination');
