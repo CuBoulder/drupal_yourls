@@ -65,7 +65,9 @@ class RandomURLController{
         // get the results of existing short URLS
         if($page){
             try{
-                $yourls_api = "{$yourls_api}&action=stats&limit=10";
+                $start = ($page * 10) - 10; //the start of results to fetch
+                $end = ($page * 10) -1; // end of the results to fetch
+                $yourls_api = "{$yourls_api}&action=stats&limit={$end}&start={$start}"; //get 10 results at a time
                 // \Drupal::logger('random_urls')->notice("url: {$yourls_api}");
                 $res = \Drupal::httpClient()->get($yourls_api);
                 $res = json_decode($res->getBody(), true);
@@ -96,6 +98,7 @@ class RandomURLController{
     }
 
     //render the page to get a random URL
+    // TODO: make this render async
     public function render(Request $req){
         $results = [];
         if($req->query->get('page')){

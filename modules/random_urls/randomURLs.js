@@ -30,12 +30,12 @@
     });
     // Handle the search feature
     document.getElementById('next-button').addEventListener('click', event=> {
-        let next = +event.target.value + 10;
+        let next = +event.target.value + 1;
         window.location.href = window.location.origin + window.location.pathname + '?page=' + next ;
     });
     document.getElementById('prev-button').addEventListener('click', event=> {
-        let next = +event.target.value - 10;
-        if(next < 0) next = 0;
+        let next = +event.target.value - 1;
+        if(next < 1) next = 1;
         window.location.href = window.location.origin + window.location.pathname + '?page=' + next ;
     });
     // handle the search form
