@@ -9,3 +9,15 @@ function approve_urls_views_pre_render($view) {
         $view->attachment_before['#attached']['library'][] = 'approve_urls/approve-urls-view';
     }
 }
+
+/**
+ * Implements hook_mail().
+ */
+function approve_urls_mail($key, &$message, $params) {
+  $message['headers'] = $params["headers"];
+  if($key == 'app_update'){
+      $message['from'] = \Drupal::config('smtp.settings')->get('smtp_from');
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params["body"];
+  }
+}
