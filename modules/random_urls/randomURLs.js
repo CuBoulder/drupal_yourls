@@ -31,12 +31,12 @@
     // Handle the search feature
     document.getElementById('next-button').addEventListener('click', event=> {
         let next = +event.target.value + 1;
-        window.location.href = window.location.origin + window.location.pathname + '?page=' + next ;
+        window.location = window.location.origin + window.location.pathname + '?page=' + next ;
     });
     document.getElementById('prev-button').addEventListener('click', event=> {
         let next = +event.target.value - 1;
         if(next < 1) next = 1;
-        window.location.href = window.location.origin + window.location.pathname + '?page=' + next ;
+        window.location = window.location.origin + window.location.pathname + '?page=' + next ;
     });
     // handle the search form
     document.getElementById('search-keyword').addEventListener('blur', e => {search = e.target.value});
@@ -45,6 +45,6 @@
             alert("Please enter a keyword to search for");
             return;
         }
-        window.location.href = window.location.origin + window.location.pathname + '?keyword=' + search;
+        window.location = window.location.origin + window.location.pathname + '?keyword=' + search;
     });
 }());

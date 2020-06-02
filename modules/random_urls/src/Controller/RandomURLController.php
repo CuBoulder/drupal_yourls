@@ -1,5 +1,5 @@
 <?php
-	
+
 namespace Drupal\random_urls\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -97,7 +97,7 @@ class RandomURLController{
         }
     }
 
-    //render the page to get a random URL
+    //render the page to get a random URL - Page cache is disabled for this page
     // TODO: make this render async
     public function render(Request $req){
         $results = [];
