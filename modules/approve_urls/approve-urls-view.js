@@ -8,6 +8,9 @@
         fetch(action)
         .then(res => res.json())
         .then(res =>{
+            if(res.action === 'deleted'){
+                window.location = window.location.href; //reload the page
+            }
             // Change the content of the status column
             console.log(status[row]);
             status[row].innerText = res.action;
