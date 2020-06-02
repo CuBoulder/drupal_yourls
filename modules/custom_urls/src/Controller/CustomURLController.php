@@ -45,7 +45,7 @@ class CustomURLController{
                 'field_ucb_site_title' => $title,
 				'field_ucb_url_status' => 0 // pending
 			]);
-            $node->status = 0; //Do not publish on creation
+            $node->status = 1; // publish on creation
 			$node->enforceIsNew();
             $node->save();
             return true;
