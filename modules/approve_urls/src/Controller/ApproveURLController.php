@@ -2,12 +2,12 @@
 	
 namespace Drupal\approve_urls\Controller;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
+// use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use \GuzzleHttp\Exception\RequestException;
 use Drupal\node\NodeInterface;
-use Drupal\user\Entity\User;
+// use Drupal\user\Entity\User;
 
 class ApproveURLController{
     private $yourls_base_url, $yourls_secret, $email_recipient;
@@ -16,9 +16,7 @@ class ApproveURLController{
         $config = \Drupal::config('drupal_yourls.settings');
         $this->yourls_base_url = $config->get('yourls_url');
         $this->yourls_secret = $config->get('yourls_secret');
-        $user = User::load(\Drupal::currentUser()->id());
-        $user = $user->getAccountName(); //Assumes this is the identikey
-        $this->email_recipient = "{$user}@colorado.edu"; //should look like asdf1234@colorado.edu
+        $this->email_recipient = \Drupal::currentUser()->getEmail();
     }
 
     // $nid is upcasted from the dynamic route in the routing.yml file
@@ -28,18 +26,19 @@ class ApproveURLController{
             // delete the node from YOURLS (if exists) and from Drupal
             $keyword = urldecode($nid->get('field_ucb_short_url')->value);
             $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=delete&shorturl={$keyword}&format=json";
-            \Drupal::httpClient()->get($yourls_api);
-            //$res = json_decode($res->getBody(), true);
-            // $nid->delete();
+            $res = \Drupal::httpClient()->get($yourls_api);
+            $res = json_decode($res->getBody(), true);
+            \Drupal::logger('approve_urls')->notice("Sucessfully deleted short URL: {$keyword}");
+            $nid->delete();
         }
         catch(RequestException $e){
             // If it gets here, the short URL to delete doesn't exist - returns a 404
             \Drupal::logger('approve_urls')->error($e);
         }
         finally{
-            $viewRoute = $req->query->get('destination');
-            // return new Response(json_encode(['message' => 'Application Deleted.', 'action' => 'deleted']), Response::HTTP_OK, ['content-type' => 'application/json']);
-            return new RedirectResponse($viewRoute, 302); // redirect back to the view
+            // $viewRoute = $req->query->get('destination');
+            return new Response(json_encode(['message' => 'Application Deleted.', 'action' => 'deleted']), Response::HTTP_OK, ['content-type' => 'application/json']);
+            // return new RedirectResponse($viewRoute, 302); // redirect back to the view
         }
     }
     // send an email with the application status
@@ -77,7 +76,6 @@ class ApproveURLController{
             // change the node's status to published and approved
             // 0 -> pending, 1 -> approved, 2 -> rejected
             $nid->set('field_ucb_url_status', 1);
-            $nid->set('status', 1);
             $nid->save();
             // generate a new custom short URL
             $long_url = urldecode($nid->get('field_ucb_long_url')->uri);
@@ -98,8 +96,8 @@ class ApproveURLController{
             \Drupal::logger('approve_urls')->error($e);
         }
         finally{
-            $viewRoute = $req->query->get('destination');
-            return new Response(json_encode(['message' => 'Application accepted.', 'action' => 'accepted']), Response::HTTP_OK, ['content-type' => 'application/json']);
+            // $viewRoute = $req->query->get('destination');
+            return new Response(json_encode(['message' => 'Application accepted.', 'action' => 'approved']), Response::HTTP_OK, ['content-type' => 'application/json']);
             // return new RedirectResponse($viewRoute, 302);
         }
     }
@@ -111,13 +109,13 @@ class ApproveURLController{
             $nid->save();
             \Drupal::logger('approve_urls')->notice("Rejecting Application with ID: {$nid->id()}");
             // Send an update to the user about their rejection  :(
-            // $this->sendEmail("Your application has been denied.");
+            $this->sendEmail("Your application has been denied.");
         }
         catch(\Exception $e){
             \Drupal::logger('approve_urls')->error($e);
         }
         finally{
-            $viewRoute = $req->query->get('destination');
+            // $viewRoute = $req->query->get('destination');
             return new Response(json_encode(['message' => 'Application rejected.', 'action' => 'denied']), Response::HTTP_OK, ['content-type' => 'application/json']);
             // return new RedirectResponse($viewRoute, 302); // return to view
 
