@@ -3,7 +3,7 @@ approve_urls.approve:
   defaults:
     _controller: '\Drupal\approve_urls\Controller\ApproveURLController::deleteApp'
   requirements:
-    _permission: 'access content'
+    _permission: 'manage_url_applications'
   options:
     parameters:
       nid:
@@ -13,7 +13,7 @@ approve_urls.deny:
   defaults:
     _controller: '\Drupal\approve_urls\Controller\ApproveURLController::approveApp'
   requirements:
-    _permission: 'access content'
+    _permission: 'manage_url_applications'
   options:
     parameters:
       nid:
@@ -23,7 +23,7 @@ approve_urls.delete:
   defaults:
     _controller: '\Drupal\approve_urls\Controller\ApproveURLController::rejectApp'
   requirements:
-    _permission: 'access content'
+    _permission: 'manage_url_applications'
   options:
     parameters:
       nid:

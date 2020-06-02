@@ -4,10 +4,10 @@ custom_urls.render:
     _controller: '\Drupal\custom_urls\Controller\CustomURLController::render'
     _title: 'Get a Custom URL'
   requirements:
-    _permission: 'access content'
+    _permission: 'create_url_application+manage_url_applications'
 custom_urls.add:
   path: '/add-url-request'
   defaults:
     _controller: '\Drupal\custom_urls\Controller\CustomURLController::addNewURLRequest'
   requirements:
-    _permission: 'access content'
+    _permission: 'create_url_application+manage_url_applications'
