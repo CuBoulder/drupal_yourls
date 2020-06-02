@@ -29,7 +29,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access content'
+          perm: manage_url_applications
       cache:
         type: tag
         options: {  }
