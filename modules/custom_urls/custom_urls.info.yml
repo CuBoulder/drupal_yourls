@@ -3,5 +3,6 @@ type: module
 description: An application page for requesting a custom short URL and content type schema
 package: CU URL Shortener
 core: 8.x
+core_version_requirement: ^8 || ^9
 dependencies:
   - drupal_yourls:drupal_yourls
