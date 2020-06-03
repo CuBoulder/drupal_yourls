@@ -1,0 +1,10 @@
+/* the search feature */
+#search-container{
+    display: flex;
+    margin-bottom: 1em;
+}
+#search-keyword{
+    width: 50%;
+    margin-left: 1em;
+    margin-right: 1em;
+}
