@@ -26,3 +26,14 @@ th, td {
 ul.dropbutton{
     padding: 6px !important;
 }
+
+.quickedit-field{
+    max-width: 1140px;
+    margin: auto;
+}
+
+#block-ucb2019-base-content{
+    max-width: 90%;
+    margin: auto;
+    margin-bottom: 2em;
+}
