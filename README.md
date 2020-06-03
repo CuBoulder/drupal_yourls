@@ -2,8 +2,11 @@
 ### Summary
 This module provides integration with a YOURLs installation. The only modification to the install is to include the [yourls_api_delete](https://github.com/claytondaley/yourls-api-delete) plugin.
 <br>
+<br>
 This module is designed to provide user role management and authentication. Users must be logged in to access any of the YOURLs features. Users can generate any random short URL ex. sho.rt/a67dg that comes from a colorado.edu domain or subdomain. If a user would like a custom URL, ex. sho.rt/short, they must apply for one. Applications can be reviewd by admins and can be approved or denied. On approval, a new short URL will be generated and an email will be sent to the user notifying them of their new URL. 
 <br>
+#### Requirements
+This module should work with Drupal 8 and 9. You will also have to install the ````drupal/smtp```` module if the custom_urls and approve_urls modules are enabled. The smpt module is used for sending emails through SMTP. 
 #### Permissions added
 - Create Random Short URLS: Allows for users to create random short URLs
 - Request Custom URLs: Allows users to fill out applications for custom short URLs 
