@@ -9,41 +9,4 @@
         <div id='message-container'>
             <!-- Mesage shows up here -->
         </div>
-        <h2> View all of the Short URLs </h2>
-        <p> Here are the current short URLs that have been created. You may search for a short URL and use one that already exists. </p>
-        <div id="short-urls-list">
-        <div id='search-container'>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button id="prev-button" value=1 type="button" class="btn btn-primary"> &#x227A; Prev </button>
-                <button id="next-button" value=1 type="button" class="btn btn-primary"> Next &#x227B; </button>
-            </div>
-            <input type='text' class="form-control" placeholder='Search for a keyword' id='search-keyword' />
-            <button id='search-button' type="button" class="btn btn-primary"> Search </button>
-        </div>
-        <div>
-        {# List the table results #}
-        {% if results|length > 0 %}
-            <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">Short URL</th>
-                    <th scope="col">Original URL</th>
-                    <th scope="col">Clicks</th>
-                    </tr>
-                </thead>
-            <tbody>
-            {% for i in results %}
-                <tr>
-                    <th scope="row"> <a href= {{i.shorturl}} target="_blank"> {{i.shorturl}} </a></th>
-                    <td>{{i.url}}</td>
-                    <td>{{i.clicks}}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            </table>
-            {# If there are no results #}
-            {% else %}
-                <p> No Results </p>
-            {% endif %}
-        </div>
 </div>

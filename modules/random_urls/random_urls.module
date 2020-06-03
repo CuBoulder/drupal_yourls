@@ -4,5 +4,8 @@ function random_urls_theme($existing, $type, $theme, $path){
     'random-urls-template' => [
       'variables' => ['yourlsBase' => NULL, 'yourlsSecret'=> NULL, 'results' => NULL]
     ],
+    'short-urls-results-template' => [
+      'variables' => ['results' => NULL]
+    ]
   ];
 }

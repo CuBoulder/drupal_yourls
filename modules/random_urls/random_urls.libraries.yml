@@ -6,5 +6,13 @@ random-urls:
       randomURLs.css: {}
   js:
     randomURLs.js: {}
+short-url-results:
+  version: 1.x
+  footer: true
+  css:
+    theme:
+      shortURLResults.css: {}
+  js:
+    shortURLResults.js: {}
   dependencies:
     - core/jquery
