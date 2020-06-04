@@ -1,0 +1,7 @@
+{
+    "name": "cu-boulder/drupal_yourls",
+    "description": "Drupal module to integrate with YOURLs",
+    "license": "MIT",
+    "homepage": "https://github.com/CuBoulder/drupal_yourls",
+    "type": "drupal-module"
+}
