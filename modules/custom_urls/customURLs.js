@@ -37,11 +37,10 @@
             alert("Make sure the Short URL is one word");
             return;
         }
-        if(! /[a-z]{4}[0-9]{4}/g.test(data.identikey)){
-            alert("Please enter your CU Identikey.");
-            return;
-        }
-        console.table(data);
+        // if(! /[a-z]{4}[0-9]{4}/g.test(data.identikey)){
+        //     alert("Please enter your CU Identikey.");
+        //     return;
+        // }
         fetch('/add-url-request', {method: 'POST', body: JSON.stringify(data)})
         .then(res => {
             if(res.status === 200){

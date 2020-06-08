@@ -2,12 +2,15 @@
     $(function(){
         // Handle the search feature
         let search = null;
+        let params = new URLSearchParams(window.location.search).get('page');
         document.getElementById('next-button').addEventListener('click', event=> {
-            let next = +event.target.value + 1;
+            let next = params || event.target.value;
+            next = +next + 1;
             window.location = window.location.origin + window.location.pathname + '?page=' + next ;
         });
         document.getElementById('prev-button').addEventListener('click', event=> {
-            let next = +event.target.value - 1;
+            let next = params || event.target.value;
+            next = +next - 1;
             if(next < 1) next = 1;
             window.location = window.location.origin + window.location.pathname + '?page=' + next ;
         });
