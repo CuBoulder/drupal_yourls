@@ -5,6 +5,8 @@ namespace Drupal\random_urls\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use \GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ClientException;
+
 
 class RandomURLController{	
     private $yourls_base_url, $yourls_secret;
@@ -48,8 +50,8 @@ class RandomURLController{
                 \Drupal::logger('random_urls')->notice("Adding a new random URL. View it on your YOURLs installation");
                 return new Response($res->getBody(), Response::HTTP_OK, ['content-type' => 'application/json']);
             }
-            catch(RequestException $e){
-                \Drupal::logger('random_urls')->error($e);
+            catch(RequestException | ClientException $e){
+                \Drupal::logger('random_urls')->error('Malformed URL or request resulted in a 404');
                 return new Response(json_encode(['message' => $e]), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
             }
         }

@@ -51,7 +51,7 @@ class CustomURLController{
             return true;
         }
         catch(\Exception $e){
-            \Drupal::logger('custom_urls')->error($e);
+            \Drupal::logger('custom_urls')->error('Error entering new short URL application into DB');
             return false;
         }
     }

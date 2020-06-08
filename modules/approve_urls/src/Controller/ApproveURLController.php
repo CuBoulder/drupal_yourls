@@ -5,7 +5,8 @@ namespace Drupal\approve_urls\Controller;
 // use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use \GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ClientException;
 use Drupal\node\NodeInterface;
 // use Drupal\user\Entity\User;
 
@@ -31,9 +32,9 @@ class ApproveURLController{
             \Drupal::logger('approve_urls')->notice("Sucessfully deleted short URL: {$keyword}");
             $nid->delete();
         }
-        catch(RequestException $e){
+        catch(RequestException | ClientException $e){
             // If it gets here, the short URL to delete doesn't exist - returns a 404
-            \Drupal::logger('approve_urls')->error($e);
+            \Drupal::logger('approve_urls')->error('Malformed URL or Request returned a 404');
         }
         finally{
             // $viewRoute = $req->query->get('destination');
@@ -92,8 +93,8 @@ class ApproveURLController{
             // Email the user about their application status
             $this->sendEmail("Your application has been approved. Here is your short URL: {$res['shorturl']}");
         }
-        catch(\Exception $e){
-            \Drupal::logger('approve_urls')->error($e);
+        catch(RequestException | ClientException $e){
+            \Drupal::logger('approve_urls')->error('Error making Request or responded with a 404');
         }
         finally{
             // $viewRoute = $req->query->get('destination');
@@ -112,7 +113,7 @@ class ApproveURLController{
             $this->sendEmail("Your application has been denied.");
         }
         catch(\Exception $e){
-            \Drupal::logger('approve_urls')->error($e);
+            \Drupal::logger('approve_urls')->error('Error changing custom short URL status');
         }
         finally{
             // $viewRoute = $req->query->get('destination');

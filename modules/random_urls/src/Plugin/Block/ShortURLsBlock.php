@@ -3,6 +3,8 @@
 namespace Drupal\random_urls\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Provides a 'Short URLs' Block.
@@ -27,16 +29,14 @@ class ShortURLsBlock extends BlockBase {
         if($page){
             try{
                 $start = ($page * 10) - 10; //the start of results to fetch
-                $end = ($page * 10) -1; // end of the results to fetch
-                $yourls_api = "{$yourls_api}&action=stats&limit={$end}&start={$start}"; //get 10 results at a time
+                $yourls_api = "{$yourls_api}&action=stats&limit=10&start={$start}"; //get 10 results at a time
                 // \Drupal::logger('random_urls')->notice("url: {$yourls_api}");
                 $res = \Drupal::httpClient()->get($yourls_api);
                 $res = json_decode($res->getBody(), true);
                 return $res['links'];
             }
-            catch(RequestException $e){
-                \Drupal::logger('random_urls')->error($e);
-                return [];
+            catch(RequestException | ClientException $e){
+                \Drupal::logger('random_urls')->error("Error with request, malformed URL or request resulted in a 404");
             }
         }
         // get data about a specific short url
@@ -48,9 +48,8 @@ class ShortURLsBlock extends BlockBase {
                 // format the result
                 return ["link_1" => $res['link'] ];
             }
-            catch(RequestException $e){
-                \Drupal::logger('random_urls')->error($e);
-                return []; // 404 or some other error
+            catch(RequestException | ClientException $e){
+                \Drupal::logger('random_urls')->error('Malformed URL or Request resulted in 404');
             }
         }
         else{
