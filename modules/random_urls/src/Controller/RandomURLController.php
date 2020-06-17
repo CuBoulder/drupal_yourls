@@ -52,13 +52,50 @@ class RandomURLController{
             }
             catch(RequestException | ClientException $e){
                 \Drupal::logger('random_urls')->error('Malformed URL or request resulted in a 404');
-                return new Response(json_encode(['message' => $e]), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+                return new Response(json_encode(['message' => 'Malformed URL or request resulted in a 404']), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
             }
         }
         else{
             // URL doesn't exist
             $message = "This URL can't be found. Please make sure that your URL goes somewhere.";
             return new Response(json_encode(['message' => $message]), Response::HTTP_OK, ['content-type' => 'application/json']);
+        }
+    }
+    
+    
+    //get all of the listed URLS
+    public function getAllURLs(Request $req){
+        $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&format=json";
+        // get the results of existing short URLS
+        if($req->query->get('page') !== null){
+            try{
+                $start = ($req->query->get('page') * 10) - 10; //the start of results to fetch
+                $yourls_api = "{$yourls_api}&action=stats&limit=10&start={$start}"; //get 10 results at a time
+                $res = \Drupal::httpClient()->get($yourls_api);
+                $res = json_decode($res->getBody(), true);
+                return new Response(json_encode(['links' => $res['links']]), Response::HTTP_OK, ['content-type' => 'application/json']);
+            }
+            catch(RequestException | ClientException $e){
+                \Drupal::logger('random_urls')->error("Error with request, malformed URL or request resulted in a 404");
+                return new Response(json_encode(['message' => 'Error in request or request resulted in a 404']), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+            }
+        }
+        // get data about a specific short url
+        else if($req->query->get('keyword')){
+            try{
+                $yourls_api = "{$yourls_api}&action=url-stats&shorturl={$req->query->get('keyword')}";
+                $res = \Drupal::httpClient()->get($yourls_api);
+                $res = json_decode($res->getBody(), true);
+                // format the result
+                return new Response(json_encode(['links' => [ 'link_1' => $res['link']] ]), Response::HTTP_OK, ['content-type' => 'application/json']);
+            }
+            catch(RequestException | ClientException $e){
+                \Drupal::logger('random_urls')->error('Malformed URL or Request resulted in 404');
+                return new Response(json_encode(['message' => 'Error in request or request resulted in a 404']), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+            }
+        }
+        else{
+            return new Response(json_encode(['message' => 'Invalid query parameter']), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
         }
     }
 

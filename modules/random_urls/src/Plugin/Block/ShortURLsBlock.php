@@ -22,38 +22,17 @@ class ShortURLsBlock extends BlockBase {
         $this->yourls_base_url = $config->get('yourls_url');
         $this->yourls_secret = $config->get('yourls_secret'); 
     }
-    //get all of the existing short urls from the API or data about a certain url
-    private function getAllShortURLs($page = null, $keyword=null){
-        $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&format=json";
-        // get the results of existing short URLS
-        if($page){
-            try{
-                $start = ($page * 10) - 10; //the start of results to fetch
-                $yourls_api = "{$yourls_api}&action=stats&limit=10&start={$start}"; //get 10 results at a time
-                // \Drupal::logger('random_urls')->notice("url: {$yourls_api}");
-                $res = \Drupal::httpClient()->get($yourls_api);
-                $res = json_decode($res->getBody(), true);
-                return $res['links'];
-            }
-            catch(RequestException | ClientException $e){
-                \Drupal::logger('random_urls')->error("Error with request, malformed URL or request resulted in a 404");
-            }
+    //get the first 10 short URLs to initally populate table
+    private function getResults(){
+        $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&format=json&action=stats&limit=10";
+        try{
+            // \Drupal::logger('random_urls')->notice("url: {$yourls_api}");
+            $res = \Drupal::httpClient()->get($yourls_api);
+            $res = json_decode($res->getBody(), true);
+            return ['links' => $res['links'], 'max_pages' => $res['stats']['total_links']];
         }
-        // get data about a specific short url
-        else if($keyword){
-            try{
-                $yourls_api = "{$yourls_api}&action=url-stats&shorturl={$keyword}";
-                $res = \Drupal::httpClient()->get($yourls_api);
-                $res = json_decode($res->getBody(), true);
-                // format the result
-                return ["link_1" => $res['link'] ];
-            }
-            catch(RequestException | ClientException $e){
-                \Drupal::logger('random_urls')->error('Malformed URL or Request resulted in 404');
-            }
-        }
-        else{
-            return [];
+        catch(RequestException | ClientException $e){
+            \Drupal::logger('random_urls')->error("Error with request, malformed URL or request resulted in a 404");
         }
     }
 
@@ -62,21 +41,12 @@ class ShortURLsBlock extends BlockBase {
      */
     public function build() {
         $req = \Drupal::request();
-        $results = [];
-        if($req->query->get('page')){
-            $results = $this->getAllShortURLs($req->query->get('page'), null);
-        }
-        else if($req->query->get('keyword')){
-            $results = $this->getAllShortURLs(null, $req->query->get('keyword'));
-        }
-        // if no query parameters, just return the top 10 results
-        else{
-            $results = $this->getAllShortURLs(1, null);
-        }
+        $results = $this->getResults();
         return [
             '#theme' => 'short-urls-results-template',
-            '#results' => $results,
-            '#cache' => ['max-age' => 0]
+            '#results' => $results['links'],
+            '#maxPages' => $results['max_pages'],
+//             '#cache' => ['max-age' => 0]
         ];
     }
 
