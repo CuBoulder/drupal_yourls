@@ -47,16 +47,17 @@
                 return res.json();
             }
             else{
-                throw Error('you ruined it');
+                throw Error('Response returned non 200 status code');
             }
         })
         .then(res => {
             let message = document.getElementById('message');
-            message.classList.remove('hidden');
             if(res.app_status === true){
+                message.className = "alert alert-success";
                 message.innerHTML = "Added a new Application. An email will be sent to your colorado.edu account with the status of your application once its been reviewed.";
             }
             else{
+                message.className = "alert alert-danger";
                 message.innerHTML = res.message;
             }
         })
