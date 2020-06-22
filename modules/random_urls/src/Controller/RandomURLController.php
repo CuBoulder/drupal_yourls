@@ -48,7 +48,8 @@ class RandomURLController{
                 // \Drupal::logger('random_urls')->notice("url : $yourls_api");
                 $res = \Drupal::httpClient()->get($yourls_api); //call the API
                 \Drupal::logger('random_urls')->notice("Adding a new random URL. View it on your YOURLs installation");
-                return new Response($res->getBody(), Response::HTTP_OK, ['content-type' => 'application/json']);
+                $res = json_decode($res->getBody());
+                return new Response(json_encode(['message' => $res]), Response::HTTP_OK, ['content-type' => 'application/json']);
             }
             catch(RequestException | ClientException $e){
                 \Drupal::logger('random_urls')->error('Malformed URL or request resulted in a 404');

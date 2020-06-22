@@ -19,10 +19,19 @@
                 }
             })
             .then(res => {
-                m.innerHTML = `Your short url is: ${res.shorturl}`;
+                if(res.message.status === 'success' || res.message.code === 'error:url'){
+                    // status will fail if user asks for existing url - so return the existing shorturl
+                    m.className = "alert alert-success";
+                    m.innerHTML = `Your short url is: ${res.message.shorturl}`;
+                }
+                else{
+                    m.className = "alert alert-danger";
+                    m.innerHTML = `Your short url is: ${res.message}`;
+                }
             })
             .catch(err => {
                 console.error(err);
+                m.classname = "alert alert-danger";
                 m.innerText = "Something went wrong. Please try again."; 
             });
         }
