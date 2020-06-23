@@ -2,13 +2,12 @@
 	
 namespace Drupal\approve_urls\Controller;
 
-// use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
 use Drupal\node\NodeInterface;
-// use Drupal\user\Entity\User;
+use Drupal\taxonomy\Entity\Term;
 
 class ApproveURLController{
     private $yourls_base_url, $yourls_secret, $email_recipient;
@@ -24,22 +23,20 @@ class ApproveURLController{
     // https://api.drupal.org/api/drupal/core%21modules%21node%21src%21NodeInterface.php/interface/NodeInterface/8.2.x
     public function deleteApp(Request $req, NodeInterface $nid = null){
         try{
-            // delete the node from YOURLS (if exists) and from Drupal
+            // delete the node from YOURLS (if exists)
             $keyword = urldecode($nid->get('field_ucb_short_url')->value);
             $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=delete&shorturl={$keyword}&format=json";
             $res = \Drupal::httpClient()->get($yourls_api);
             $res = json_decode($res->getBody(), true);
-            \Drupal::logger('approve_urls')->notice("Sucessfully deleted short URL: {$keyword}");
-            $nid->delete();
+            \Drupal::logger('approve_urls')->notice("Sucessfully deleted short URL: {$keyword} from YOURLs.");
         }
         catch(RequestException | ClientException $e){
             // If it gets here, the short URL to delete doesn't exist - returns a 404
-            \Drupal::logger('approve_urls')->error('Malformed URL or Request returned a 404');
+            \Drupal::logger('approve_urls')->error("Malformed URL or can't delete short URL from YOURLs because it doesn't exist. This is probably a result from deleting an application that's pending/rejected");
         }
         finally{
-            // $viewRoute = $req->query->get('destination');
+            $nid->delete();
             return new Response(json_encode(['message' => 'Application Deleted.', 'action' => 'deleted']), Response::HTTP_OK, ['content-type' => 'application/json']);
-            // return new RedirectResponse($viewRoute, 302); // redirect back to the view
         }
     }
     // send an email with the application status
@@ -72,53 +69,72 @@ class ApproveURLController{
             return;
         }
     }
+    
+    private function getTIDfromName($name){
+        $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('application_status_codes');
+        $tid = null;
+        foreach ($terms as $i) {
+          if($i->name == $name){
+              $tid = $i->tid;
+          }
+        }
+        return $tid;
+    }
+    
     public function approveApp(Request $req, NodeInterface $nid = null){
+        $term = Term::load($nid->get('field_ucb_url_status')->target_id)->getName();
+        if($term === 'Approved'){
+            return new Response(json_encode(['message' => 'Application already approved.', 'action' => 'Approved']), Response::HTTP_OK, ['content-type' => 'application/json']);
+        }
+        $tid = $this->getTIDfromName('Approved');
         try{
-            // change the node's status to published and approved
-            // 0 -> pending, 1 -> approved, 2 -> rejected
-            $nid->set('field_ucb_url_status', 1);
+            if(!$tid){
+                throw new Exception("Couldn't find taxonomy term 'Approved'. Cannot approve application. ");
+            }
+            $nid->set('field_ucb_url_status', ['target_id' => $tid]);
             $nid->save();
             // generate a new custom short URL
             $long_url = urldecode($nid->get('field_ucb_long_url')->uri);
             $keyword = urldecode($nid->get('field_ucb_short_url')->value);
             $title = urldecode($nid->get('field_ucb_site_title')->value); 
             \Drupal::logger('approve_urls')->notice("keyword: {$keyword}, long url: {$long_url}, title: {$title}");
-            // $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=shorturl&format=json&url={$long_url}&keyword={$keyword}&title={$title}";
-            // \Drupal::logger('approve_urls')->notice("Making request to : {$yourls_api}");
             $client = \Drupal::httpClient();
             $query_params = "signature={$this->yourls_secret}&action=shorturl&format=json&url={$long_url}&keyword={$keyword}&title={$title}";
             $res = $client->get("$this->yourls_base_url", ['query' => $query_params]);
             $res = json_decode($res->getBody(), true);
             \Drupal::logger('approve_urls')->notice("Created new short URL: {$res['shorturl']}");
             // Email the user about their application status
-            $this->sendEmail("Your application has been approved. Here is your short URL: {$res['shorturl']}");
+            //$this->sendEmail("Your application has been approved. Here is your short URL: {$res['shorturl']}");
         }
-        catch(RequestException | ClientException $e){
-            \Drupal::logger('approve_urls')->error('Error making Request or responded with a 404');
+        catch(Exception | RequestException | ClientException $e){
+            \Drupal::logger('approve_urls')->error($e->getMessage());
         }
         finally{
-            // $viewRoute = $req->query->get('destination');
-            return new Response(json_encode(['message' => 'Application accepted.', 'action' => 'approved']), Response::HTTP_OK, ['content-type' => 'application/json']);
-            // return new RedirectResponse($viewRoute, 302);
+            return new Response(json_encode(['message' => 'Application accepted.', 'action' => 'Approved']), Response::HTTP_OK, ['content-type' => 'application/json']);
         }
     }
 
     public function rejectApp(Request $req, NodeInterface $nid = null){
+        $term = Term::load($nid->get('field_ucb_url_status')->target_id)->getName();
+        if($term === 'Rejected'){
+            return new Response(json_encode(['message' => 'Application already rejected.', 'action' => 'Rejected']), Response::HTTP_OK, ['content-type' => 'application/json']);
+        }
+        $tid = $this->getTIDfromName('Rejected');
         try{
-            //Reject the application
-            $nid->set('field_ucb_url_status', 2);
+            if(!$tid){
+                throw new Exception("Couldn't find taxonomy term 'Rejected'. Cannot reject application. ");
+            }
+            $nid->set('field_ucb_url_status', ['target_id' => $tid]);
             $nid->save();
             \Drupal::logger('approve_urls')->notice("Rejecting Application with ID: {$nid->id()}");
             // Send an update to the user about their rejection  :(
-            $this->sendEmail("Your application has been denied.");
+            //$this->sendEmail("Your application has been denied.");
         }
-        catch(\Exception $e){
-            \Drupal::logger('approve_urls')->error('Error changing custom short URL status');
+        catch(Exception $e){
+            \Drupal::logger('approve_urls')->error($e->getMessage());
         }
         finally{
-            // $viewRoute = $req->query->get('destination');
-            return new Response(json_encode(['message' => 'Application rejected.', 'action' => 'denied']), Response::HTTP_OK, ['content-type' => 'application/json']);
-            // return new RedirectResponse($viewRoute, 302); // return to view
+            return new Response(json_encode(['message' => 'Application rejected.', 'action' => 'Rejected']), Response::HTTP_OK, ['content-type' => 'application/json']);
 
         }
     }

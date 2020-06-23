@@ -37,3 +37,6 @@ ul.dropbutton{
     margin: auto;
     margin-bottom: 2em;
 }
+#edit-field-ucb-short-url-value{
+    display: inline;
+}

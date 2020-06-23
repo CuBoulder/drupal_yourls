@@ -12,7 +12,6 @@
                 window.location = window.location.href; //reload the page
             }
             // Change the content of the status column
-            console.log(status[row]);
             status[row].innerText = res.action;
             alert(res.message);
         })
@@ -24,8 +23,6 @@
         let links  = Array.from(list);
         links.forEach((i, index) => {
             let row = Math.floor(index / 3); // find the index of the status - 3 comes from the 3 actions
-            // attach a click event to all of the <a> tags
-            // console.log(`Row : ${row}`);
             i.children[0].addEventListener('click', e => handleAction(e, i.children[0].href, row ));
         });
     });

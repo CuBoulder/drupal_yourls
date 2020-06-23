@@ -32,26 +32,37 @@ class CustomURLController{
         }
         return true;
     }
+    
 
     // Add the form data to the DB
     private function addNewApplication($url, $shortURL, $title, $desc){
+        $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('application_status_codes');
+        $tid = null;
+        foreach ($terms as $i) {
+          if($i->name === 'Pending'){
+              $tid = $i->tid;
+          }
+        }
         try{
+            if(!$tid){
+                throw new Exception('No Term ID found. Cannot create new node.');
+            }
             $node = Node::create([
-				'type' => 'short_url_application', //MUST CREATE A CONTENT TYPE THAT MATCHES THIS!
-				'title' => "New URL Request from {$this->username}",
+				'type' => 'short_url_application',
+				'title' => "Short URL Application from {$this->username}",
                 'body' => $desc,
                 'field_ucb_long_url' => $url,
                 'field_ucb_short_url' => $shortURL,
                 'field_ucb_site_title' => $title,
-				'field_ucb_url_status' => 0 // pending
+				'field_ucb_url_status' => ['target_id' => $tid]
 			]);
             $node->status = 1; // publish on creation
 			$node->enforceIsNew();
             $node->save();
             return true;
         }
-        catch(\Exception $e){
-            \Drupal::logger('custom_urls')->error('Error entering new short URL application into DB');
+        catch(Exception $e){
+            \Drupal::logger('custom_urls')->error($e->getMessage());
             return false;
         }
     }
