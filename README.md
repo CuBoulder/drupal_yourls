@@ -18,3 +18,8 @@ This module should work with Drupal 8 and 9. You will also have to install the `
 - approve_urls: provides a view to approve custom keywords before generating a short URL
 #### Short URL Results/Search Block
 When the random_urls module is enabled, users have access to a block called *All Short URLs Block* which shows all of the generated short urls and a search bar.
+#### Setup
+Once the custom_urls module is enabled, a few terms will need to be added to the *Application Status Codes* Taxonomy. It needs to be typed exactly like shown below.
+- Pending
+- Approved
+- Rejected
