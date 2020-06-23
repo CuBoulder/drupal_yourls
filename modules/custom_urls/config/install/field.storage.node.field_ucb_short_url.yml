@@ -3,6 +3,8 @@ status: true
 dependencies:
   module:
     - node
+_core:
+  default_config_hash: N14gwdxv3SkvM-hDW0fJoRy0hGtMK2cvs6QhAxxCd2g
 id: node.field_ucb_short_url
 field_name: field_ucb_short_url
 entity_type: node

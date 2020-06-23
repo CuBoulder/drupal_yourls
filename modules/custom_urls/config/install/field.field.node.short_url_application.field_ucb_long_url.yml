@@ -6,6 +6,8 @@ dependencies:
     - node.type.short_url_application
   module:
     - link
+_core:
+  default_config_hash: _wb-NAVbk-6lmaRzkhaVmB4iub-SSih0FcWYTqNuceM
 id: node.short_url_application.field_ucb_long_url
 field_name: field_ucb_long_url
 entity_type: node

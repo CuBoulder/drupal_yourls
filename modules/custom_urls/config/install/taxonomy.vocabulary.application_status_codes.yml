@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Application Status Codes'
+vid: application_status_codes
+description: 'Status codes for short URL applications'
+weight: 0

@@ -12,6 +12,8 @@ dependencies:
   module:
     - text
     - user
+_core:
+  default_config_hash: An3abki9Ff0N2Qf0sK4IbXRx8XKyBc_VPEzLFOay-7o
 id: node.short_url_application.teaser
 targetEntityType: node
 bundle: short_url_application

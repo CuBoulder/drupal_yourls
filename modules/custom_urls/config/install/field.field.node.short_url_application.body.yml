@@ -6,6 +6,8 @@ dependencies:
     - node.type.short_url_application
   module:
     - text
+_core:
+  default_config_hash: OCdiD9Mov9tyuYnDIIgBqhVjhs8iD6SMno-Tunq8uHs
 id: node.short_url_application.body
 field_name: body
 entity_type: node

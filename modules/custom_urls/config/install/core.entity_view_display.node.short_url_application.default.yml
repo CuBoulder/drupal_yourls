@@ -10,9 +10,10 @@ dependencies:
     - node.type.short_url_application
   module:
     - link
-    - options
     - text
     - user
+_core:
+  default_config_hash: KSnY9DfZMn9ULtRUObmVITWndI58_8Mfp2crvqncroQ
 id: node.short_url_application.default
 targetEntityType: node
 bundle: short_url_application
@@ -56,9 +57,10 @@ content:
   field_ucb_url_status:
     weight: 105
     label: above
-    settings: {  }
+    settings:
+      link: true
     third_party_settings: {  }
-    type: list_default
+    type: entity_reference_label
     region: content
   links:
     weight: 100

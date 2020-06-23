@@ -8,6 +8,8 @@ third_party_settings:
     available_menus:
       - main
     parent: 'main:'
+_core:
+  default_config_hash: wkUCkcXtiT6HfoMmd1PmpDrrKotlebF3UhII9xfx5GE
 name: 'Short URL Application'
 type: short_url_application
 description: 'An application to create a custom short url'
