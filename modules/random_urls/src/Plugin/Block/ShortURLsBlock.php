@@ -3,6 +3,7 @@
 namespace Drupal\random_urls\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormStateInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 
@@ -10,9 +11,9 @@ use GuzzleHttp\Exception\RequestException;
  * Provides a 'Short URLs' Block.
  *
  * @Block(
- *   id = "short_urls_block",
+ *   id = "drupal_yourls_results_block",
  *   admin_label = @Translation("All Short URLs Block"),
- *   category = @Translation("Drupal URLs"),
+ *   category = @Translation("Drupal YOURLs"),
  * )
  */
 class ShortURLsBlock extends BlockBase {
@@ -26,7 +27,6 @@ class ShortURLsBlock extends BlockBase {
     private function getResults(){
         $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&format=json&action=stats&limit=10";
         try{
-            // \Drupal::logger('random_urls')->notice("url: {$yourls_api}");
             $res = \Drupal::httpClient()->get($yourls_api);
             $res = json_decode($res->getBody(), true);
             return ['links' => $res['links'], 'max_pages' => $res['stats']['total_links']];
@@ -35,10 +35,15 @@ class ShortURLsBlock extends BlockBase {
             \Drupal::logger('random_urls')->error("Error with request, malformed URL or request resulted in a 404");
         }
     }
-
     /**
-     * {@inheritdoc}
-     */
+    * {@inheritdoc}
+    */
+    public function defaultConfiguration() {
+      return array('label' => 'YOURLs Results Block',);
+    }
+    /**
+    * {@inheritdoc}
+    */
     public function build() {
         $req = \Drupal::request();
         $results = $this->getResults();
