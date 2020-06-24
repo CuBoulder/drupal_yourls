@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+
+function approve_urls_uninstall() {
+  // Remove the config files for the view
+  $entityView = \Drupal::entityTypeManager()->getStorage('view')->load('short_url_applications');
+  if($entityView){
+    $entityView->delete();
+  }
+}

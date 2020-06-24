@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+
+function drupal_yourls_uninstall() {
+  // Remove the config files for the configuration form
+  $config = \Drupal::service('config.factory');
+  $yourls_config = $config->getEditable('drupal_yourls.settings');
+  $yourls_config->delete();
+}
