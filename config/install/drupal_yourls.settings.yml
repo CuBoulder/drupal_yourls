@@ -1,2 +1,3 @@
-yourls_url: 'http://localhost:8888'
-yourls_secret: '1234'
+yourls_url: 'http://sho.rt/yourls-api.php'
+yourls_secret: '12345'
+yourls_send_email: 1

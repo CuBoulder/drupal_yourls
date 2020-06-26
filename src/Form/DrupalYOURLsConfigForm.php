@@ -28,6 +28,11 @@ class DrupalYOURLsConfigForm extends ConfigFormBase {
                 '#description' => $this->t('Enter your secret token for your YOURLs install. This can be found on the tools page from the Admin menu.'),
                 '#default_value' => $config->get('yourls_secret'),
             ];
+            $form['YOURLS_send_email'] = [
+                '#type' => 'checkbox',
+                '#title' => $this->t('Send confirmation emails to applicants'),
+                '#default_value' => $config->get('yourls_send_email'),
+            ];
 				return parent::buildForm($form, $form_state);
 		 }
 
@@ -38,6 +43,7 @@ class DrupalYOURLsConfigForm extends ConfigFormBase {
 			// Set the submitted configuration setting
 			->set('yourls_url', $form_state->getValue('YOURLS_URL'))
 			->set('yourls_secret', $form_state->getValue('YOURLS_secret'))
+			->set('yourls_send_email', $form_state->getValue('YOURLS_send_email'))
 			->save();
 
 			parent::submitForm($form, $form_state);
