@@ -1,6 +1,10 @@
 /* styles to make the view look nicer */
+#edit-actions{
+    margin-bottom: 1em;
+}
+
 table{
-    border: 1px solid grey;
+    border: none;
 }
 
 thead{
@@ -13,8 +17,9 @@ tr:nth-child(even) {
 }
 
 th, td {
-    padding: 15px;
+    padding: 12px;
     text-align: left;
+    border-bottom: 1px solid grey;
 }
 
 .dropbutton-widget{
@@ -39,4 +44,14 @@ ul.dropbutton{
 }
 #edit-field-ucb-short-url-value{
     display: inline;
+}
+
+.url-app-details{
+    color: #006db1;
+    padding: 0px;
+    margin: 0px;
+}
+.url-app-details:hover{
+    text-decoration: underline;
+    cursor: pointer;
 }

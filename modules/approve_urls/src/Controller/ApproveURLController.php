@@ -10,13 +10,31 @@ use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 
 class ApproveURLController{
-    private $yourls_base_url, $yourls_secret, $email_recipient;
+    private $yourls_base_url, $yourls_secret, $email_recipient, $send_email_flag;
     // get the configuration settings for the YOURLs install
     public function __construct(){
         $config = \Drupal::config('drupal_yourls.settings');
         $this->yourls_base_url = $config->get('yourls_url');
         $this->yourls_secret = $config->get('yourls_secret');
+        $this->send_email_flag = $config->get('yourls_send_email'); // 0 | 1
         $this->email_recipient = \Drupal::currentUser()->getEmail();
+    }
+    
+    // return details about a Node
+    public function getSubmissionDetails(Request $req, NodeInterface $nid = null){
+        if($nid){
+            $details = [
+                'name' => $nid->getOwner()->getDisplayName(),
+                'keyword' => $nid->get('field_ucb_short_url')->value,
+                'title' => $nid->get('field_ucb_site_title')->value,
+                'url' => $nid->get('field_ucb_long_url')->uri,
+                'reason' => $nid->body->view('full')
+            ];
+            return new Response(json_encode($details), Response::HTTP_OK, ['content-type' => 'application/json']);
+        }
+        else{
+            return new Response(json_encode(['message' => 'Node does not exist']), Response::INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+        }
     }
 
     // $nid is upcasted from the dynamic route in the routing.yml file
@@ -28,15 +46,20 @@ class ApproveURLController{
             $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=delete&shorturl={$keyword}&format=json";
             $res = \Drupal::httpClient()->get($yourls_api);
             $res = json_decode($res->getBody(), true);
-            \Drupal::logger('approve_urls')->notice("Sucessfully deleted short URL: {$keyword} from YOURLs.");
+            \Drupal::logger('approve_urls')->notice("Successfully deleted short URL: {$keyword} from YOURLs.");
         }
         catch(RequestException | ClientException $e){
             // If it gets here, the short URL to delete doesn't exist - returns a 404
             \Drupal::logger('approve_urls')->error("Malformed URL or can't delete short URL from YOURLs because it doesn't exist. This is probably a result from deleting an application that's pending/rejected");
         }
         finally{
-            $nid->delete();
-            return new Response(json_encode(['message' => 'Application Deleted.', 'action' => 'deleted']), Response::HTTP_OK, ['content-type' => 'application/json']);
+            if(!$nid){
+                return new Response(json_encode(['message' => 'Node does not exist']), Response::INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+            }
+            else{
+                $nid->delete();
+                return new Response(json_encode(['message' => 'Application Deleted.', 'action' => 'deleted']), Response::HTTP_OK, ['content-type' => 'application/json']);   
+            }
         }
     }
     // send an email with the application status
@@ -91,6 +114,9 @@ class ApproveURLController{
             if(!$tid){
                 throw new Exception("Couldn't find taxonomy term 'Approved'. Cannot approve application. ");
             }
+            if(!$nid){
+                throw new Exception("Node doesn't exist ");
+            }
             $nid->set('field_ucb_url_status', ['target_id' => $tid]);
             $nid->save();
             // generate a new custom short URL
@@ -103,8 +129,10 @@ class ApproveURLController{
             $res = $client->get("$this->yourls_base_url", ['query' => $query_params]);
             $res = json_decode($res->getBody(), true);
             \Drupal::logger('approve_urls')->notice("Created new short URL: {$res['shorturl']}");
-            // Email the user about their application status
-            //$this->sendEmail("Your application has been approved. Here is your short URL: {$res['shorturl']}");
+            if($this->send_email_flag === 1){
+                // Email the user about their application status
+                $this->sendEmail("Your application has been approved. Here is your short URL: {$res['shorturl']}");
+            }
         }
         catch(Exception | RequestException | ClientException $e){
             \Drupal::logger('approve_urls')->error($e->getMessage());
@@ -124,11 +152,16 @@ class ApproveURLController{
             if(!$tid){
                 throw new Exception("Couldn't find taxonomy term 'Rejected'. Cannot reject application. ");
             }
+            if(!$nid){
+                throw new Exception("Node doesn't exist");
+            }
             $nid->set('field_ucb_url_status', ['target_id' => $tid]);
             $nid->save();
             \Drupal::logger('approve_urls')->notice("Rejecting Application with ID: {$nid->id()}");
-            // Send an update to the user about their rejection  :(
-            //$this->sendEmail("Your application has been denied.");
+            if($this->send_email_flag === 1){
+                // Send an update to the user about their rejection  :(
+                $this->sendEmail("Your application has been denied.");
+            }
         }
         catch(Exception $e){
             \Drupal::logger('approve_urls')->error($e->getMessage());

@@ -28,3 +28,13 @@ approve_urls.delete:
     parameters:
       nid:
         type: entity:node
+approve_urls.details:
+  path: 'application/details/{nid}'
+  defaults:
+    _controller: '\Drupal\approve_urls\Controller\ApproveURLController::getSubmissionDetails'
+  requirements:
+    _permission: 'manage_url_applications'
+  options:
+    parameters:
+      nid:
+        type: entity:node
