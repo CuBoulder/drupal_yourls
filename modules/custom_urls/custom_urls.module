@@ -2,7 +2,7 @@
 function custom_urls_theme($existing, $type, $theme, $path){
   return [
     'custom-urls-template' => [
-      'variables' => ['yourlsBase' => NULL, 'yourlsSecret'=> NULL, 'username' => NULL],
+      'variables' => ['yourlsBase' => NULL, 'username' => NULL],
     ],
   ];
 }

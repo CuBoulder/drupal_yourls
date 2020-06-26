@@ -1,4 +1,5 @@
 (function($){
+    console.log("%cSKO BUFFS!","color: #CFB87C; font-size: 2.75em;");
     $(function(){
         // Handle the search feature
         let search = null;

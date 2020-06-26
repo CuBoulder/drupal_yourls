@@ -15,7 +15,7 @@ class CustomURLController{
         $user = User::load(\Drupal::currentUser()->id());
         $config = \Drupal::config('drupal_yourls.settings');
 
-        $this->username = $user->getAccountName(); // Assumes that the username is also the identikey
+        $this->username = $user->getAccountName();
         $this->yourls_base_url = $config->get('yourls_url');
         $this->yourls_secret = $config->get('yourls_secret'); 
     }
@@ -116,7 +116,6 @@ class CustomURLController{
     public function render(){
         return(array(
             '#theme' => 'custom-urls-template',
-            '#yourlsBase' => 'asdf',
             '#username' => $this->username
         ));
     }
