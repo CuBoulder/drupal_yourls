@@ -46,6 +46,10 @@ ul.dropbutton{
     display: inline;
 }
 
+li.dropbutton-action > a{
+    padding: 0px 6px !important;
+}
+
 .url-app-details{
     color: #006db1;
     padding: 0px;
@@ -55,3 +59,15 @@ ul.dropbutton{
     text-decoration: underline;
     cursor: pointer;
 }
+
+#details-card{
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: #f5f5f2;
+}
+
+.app-status-Approved{ color: green; font-weight: bold;}
+.app-status-Pending{ color: goldenrod; font-weight: bold;}
+.app-status-Rejected{ color: red; font-weight: bold;}

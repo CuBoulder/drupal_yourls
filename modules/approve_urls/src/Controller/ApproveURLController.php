@@ -22,18 +22,20 @@ class ApproveURLController{
     
     // return details about a Node
     public function getSubmissionDetails(Request $req, NodeInterface $nid = null){
-        if($nid){
+        $term = Term::load($nid->get('field_ucb_url_status')->target_id)->getName();
+        if($nid && $term){
             $details = [
                 'name' => $nid->getOwner()->getDisplayName(),
                 'keyword' => $nid->get('field_ucb_short_url')->value,
                 'title' => $nid->get('field_ucb_site_title')->value,
                 'url' => $nid->get('field_ucb_long_url')->uri,
-                'reason' => $nid->body->view('full')
+                'reason' => $nid->body->view('full'),
+                'app_status' => $term
             ];
             return new Response(json_encode($details), Response::HTTP_OK, ['content-type' => 'application/json']);
         }
         else{
-            return new Response(json_encode(['message' => 'Node does not exist']), Response::INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+            return new Response(json_encode(['message' => 'Node or Taxonomy Term does not exist']), Response::INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
         }
     }
 

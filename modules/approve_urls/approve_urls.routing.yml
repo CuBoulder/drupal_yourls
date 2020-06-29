@@ -1,3 +1,9 @@
+approve_urls.manage:
+  path: 'admin/yourls/short-url-applications'
+  defaults:
+    _route: 'views.view.short_url_applications'
+  requirements:
+    _permission: 'manage_url_applications'
 approve_urls.approve:
   path: 'application/delete/{nid}'
   defaults:

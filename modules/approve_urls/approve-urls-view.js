@@ -35,32 +35,30 @@
         })
         .then(details => {
             $('.modal-body').html(() => `
+                <p><strong> Status: </strong> <span class='app-status-${details.app_status}'> ${details.app_status}</span></p>
                 <p><strong> Author: </strong>${details.name}</p>
                 <p><strong> Site Title: </strong>${details.title}</p>
                 <p><strong> Long URL: </strong> <a href=${details.url} target="_blank">${details.url}</a></p>
                 <p><strong> Short URL: </strong>${details.keyword}</p>
                 <p><strong> Reason: </strong>${details.reason}</p>
             `);
-            $('#myModal').modal('show');
         })
         .catch(err => {
             console.error(err);
+            $('.modal-body').html(() => `<p> Something went wrong getting the details. You can try to <a href='/node/${node}'> go here </a> to view the unformatted content. </p>`);
         });
     }
 
     $(function(){
         // Add empty modal
-        $('.short-url-applications-view').append(`
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        $('div.attachment.attachment-before').append(`
+        <div class="modal fade" id="details-card" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> Application Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title"> Application Details</h5>
               </div>
-              <div class="modal-body"></div>
+              <div class="modal-body"> Click on 'Application Details' to see more about that application. </div>
             </div>
           </div>
         </div>`);
