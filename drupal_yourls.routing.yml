@@ -4,4 +4,4 @@ drupal_yourls.settings:
     _form: \Drupal\drupal_yourls\Form\DrupalYOURLsConfigForm
     _title: 'Drupal YOURLs Configuration'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer site configuration+manage_url_applications'
