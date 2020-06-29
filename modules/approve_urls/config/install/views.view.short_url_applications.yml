@@ -7,6 +7,8 @@ dependencies:
     - field.storage.node.field_ucb_site_title
     - field.storage.node.field_ucb_url_status
     - taxonomy.vocabulary.application_status_codes
+  content:
+    - 'block_content:basic:c5371a53-2aea-44cc-a2e8-c49bc2d2fe6f'
   module:
     - link
     - node
@@ -46,7 +48,7 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -495,7 +497,7 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Approve Action'
           label: ''
           exclude: true
           alter:
@@ -510,7 +512,7 @@ display:
             trim_whitespace: false
             alt: ''
             rel: ''
-            link_class: ''
+            link_class: app-action
             prefix: ''
             suffix: ''
             target: ''
@@ -544,7 +546,7 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Reject Action'
           label: ''
           exclude: true
           alter:
@@ -574,14 +576,14 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: ''
-          element_class: ''
+          element_type: '0'
+          element_class: app-action
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: false
+          element_default_classes: true
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -593,7 +595,7 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Delete Action'
           label: ''
           exclude: true
           alter:
@@ -623,8 +625,8 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: ''
-          element_class: ''
+          element_type: '0'
+          element_class: app-actions
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -837,7 +839,20 @@ display:
           plugin_id: string
       sorts: {  }
       title: 'Short URL Applications'
-      header: {  }
+      header:
+        entity_block_content:
+          id: entity_block_content
+          table: views
+          field: entity_block_content
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          target: c5371a53-2aea-44cc-a2e8-c49bc2d2fe6f
+          view_mode: default
+          bypass_access: false
+          plugin_id: entity
       footer: {  }
       empty: {  }
       relationships:
@@ -881,7 +896,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: short-url-applications
+      path: admin/yourls/short-url-applications
       menu:
         type: none
         title: 'Approve Short URLs'
