@@ -37,10 +37,7 @@
             alert("Make sure the Short URL is one word");
             return;
         }
-        // if(! /[a-z]{4}[0-9]{4}/g.test(data.identikey)){
-        //     alert("Please enter your CU Identikey.");
-        //     return;
-        // }
+        let message = document.getElementById('message');
         fetch('/add-url-request', {method: 'POST', body: JSON.stringify(data)})
         .then(res => {
             if(res.status === 200){
@@ -51,7 +48,6 @@
             }
         })
         .then(res => {
-            let message = document.getElementById('message');
             if(res.app_status === true){
                 message.className = "alert alert-success";
                 message.innerHTML = "Added a new Application. An email will be sent to your colorado.edu account with the status of your application once its been reviewed.";
@@ -61,6 +57,10 @@
                 message.innerHTML = res.message;
             }
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            console.error(err)
+            message.className = "alert alert-danger";
+            message.innerHTML = 'There was an error trying to subit your application. Please reload the page and try again.';
+        });
     });
 })();
