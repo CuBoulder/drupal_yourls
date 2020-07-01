@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>CU Short URLs</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/ucb-dark.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+		
+        <!-- custom CSS that doesn't belong in the theme -->
+        <style>
+            .italics{
+                font-style: italic;
+            }
+            .highlight{
+                color: #CFB87C;
+            }
+            .flexbox{
+                display: flex;
+                align-items: center;
+            }
+            .align-left{
+                text-align: left;
+            }
+        </style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+    			<div class="ucb-header"> 
+        			<img src="https://cuboulder.github.io/brand-assets/images/cu-boulder-logo-text-white.svg" alt="cu header" height="25px" width="auto" />
+                </div>
+				<section> 
+    				<h1> CU Short URLs </h1>
+                    <p> A new service provided by SRC Web Team </p>
+                </section>
+				<section>
+    				<div class="flexbox">
+                    <div class="align-left">
+    				<p> This service seeks to allow users to create short urls that match the university brand. We've created a new D9 site to interface with YOURLs, an open source link shortener. </p>
+    				<p class="fragment fade-up"> We can go from a url like this, <span class="highlight" > https://www.colorado.edu/academics/programs/technology-arts-media </span>, <br>to something like <span class="highlight">https://sho.rt/tam </span></p>
+    				</div>
+    				<div>
+        				<img src="./assets/shorturls-mockup.png" alt="mockup"/>
+    				</div>
+    				</div>
+				</section>
+				<section> 
+    				<h2> Features </h2>
+    				<ul style="line-height: 1.5em">
+        				<li> Roles </li>
+        				<li> Generate Random URLs </li>
+        				    <ul>
+            				    <li> Create a url like <span class="highlight" >https://sho.rt/dtj6h </span></li>
+            				    <li> Restrict these urls to *.colorado.edu domains </li>
+        				    </ul>
+        				<li> Application process for creating custom URLs</li>
+        				    <ul>
+            				    <li> Non *.colorado.edu links or custom paths will require approval </li>
+            				    <li> Admins will review applications and upon approval, links will automatically be created </li>
+        				    </ul>
+                        <li> Block to show a list of generated short links</li>
+                            <ul>
+                                <li> This block and be moved around to appear wherever admins would like </li>
+                            </ul>
+                        <li> Automatically send emails to users about their application status</li>
+                        <ul>
+                            <li> This feature can optionally be turned off</li>
+                        </ul>
+    				</ul>
+                </section>
+				<section>
+    				<h2> Roles </h2>
+    				<p> New users will automatically receive the <span class="italics highlight"> Web Service Contributor </span> role. This allows them to generate random urls and apply for a custom URL</p>
+    				<p class="fragment fade-up"> The <span class="italics highlight">Web Service Admin </span> role allows admins to view stats about existing short URLs and manage applications </p>
+    				<p class="fragment fade-up"> If users are abusing the service, admins can remove the <span class="italics highlight"> Web Service Contributor </span> role from them, restricting their access </p>
+				</section>
+				<section data-transition="slide-in fade-out"> 
+    				<h2> Configuration </h2>
+    				<p> Web Service Admins can easily connect Drupal to YOURLs</p>
+                </section>
+                <section data-transition="fade-in slide-out"> 
+                    <img src="./assets/config-steps.gif" alt="config setup for YOURLs" style="width: 600px; height: auto; margin-top: 4em; "/>
+                </section>
+                <section> 
+                    <h2> Let's generate a random URL </h2>
+                    <img src="./assets/random-url.gif" alt="gif of creating a short url" />
+                </section>
+                <section>
+                    <div class="flexbox">
+                        <div>
+                            <h2 class="align-left"> Now let's apply for a custom URL </h2>
+                            <p class="align-left"> Users have to fill out this form requesting the details about the short url they want </p>
+                        </div>
+                        <div>
+                            <img src="./assets/apply-url.png" alt="custom url form"/>
+                        </div>
+                    </div>
+                </section>
+				<section data-transition="slide-in fade-out">
+    				<h2> Managing URL Applications </h2>
+    				<p> Once a user has requested a short URL, an admin will have to either Approve or Reject it. Emails will automatically be sent to applicants notifying them of their status. </p>
+				</section>
+				<section data-transition="fade-in slide-out" >
+    				<img src="./assets/approve-app.gif" alt="gif of approving a short url" style="width: 600px; height: auto; margin-top: 4em; "/>
+				</section>
+				<section>
+    				<h2> Time to visit the new link</h2>
+    				<img src="./assets/visit-link.gif" alt="visit the link" style="width: 600px; height: auto; margin-top: 4em; "/>
+				</section>
+				<section> <h1> Thank you! </h1> </section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
