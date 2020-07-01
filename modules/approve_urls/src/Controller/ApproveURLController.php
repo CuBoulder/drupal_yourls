@@ -127,8 +127,15 @@ class ApproveURLController{
             $title = urldecode($nid->get('field_ucb_site_title')->value); 
             \Drupal::logger('approve_urls')->notice("keyword: {$keyword}, long url: {$long_url}, title: {$title}");
             $client = \Drupal::httpClient();
-            $query_params = "signature={$this->yourls_secret}&action=shorturl&format=json&url={$long_url}&keyword={$keyword}&title={$title}";
-            $res = $client->get("$this->yourls_base_url", ['query' => $query_params]);
+            // YOURLs POST body must be form data
+            $res = $client->post($this->yourls_base_url, ['form_params' => [
+                'action' => 'shorturl',
+                'signature' => $this->yourls_secret,
+                'url' => $long_url,
+                'format' => 'json',
+                'title' => $title,
+                'keyword' => $keyword
+            ]]);
             $res = json_decode($res->getBody(), true);
             \Drupal::logger('approve_urls')->notice("Created new short URL: {$res['shorturl']}");
             if($this->send_email_flag === 1){
