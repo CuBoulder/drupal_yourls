@@ -1,6 +1,0 @@
-drupal_yourls.admin:
-  title: 'YOURLs Connection Configuration'
-  description: 'Configure the settings for our YOURLs installation'
-  parent: 'system.admin_config_services'
-  route_name: 'drupal_yourls.settings'
-  weight: 100

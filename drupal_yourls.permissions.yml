@@ -1,9 +1,0 @@
-'create_random_url':
-  title: 'Create Random Short URLs'
-  description: 'Allow users to generate random short URLs like sho.rt/sdf46'
-'create_url_application':
-  title: 'Request Custom Short URLs'
-  description: 'Allow usesrs to fill out applications for getting custom short URLs'
-'manage_url_applications':
-  title: 'Manage Short URL Applications'
-  description: 'Allow admins to manage applications for generating custom short URLs'

@@ -1,6 +1,0 @@
-approve_urls.admin:
-  title: 'Manage Short URL Applications'
-  description: 'View details about short URL applications (YOURLs)'
-  parent: 'system.admin_config_services'
-  route_name: 'approve_urls.manage'
-  weight: 100
