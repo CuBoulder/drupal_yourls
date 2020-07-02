@@ -37,9 +37,9 @@ section.has-light-background, section.has-light-background h1, section.has-light
   --heading3-size: 1.3em;
   --heading4-size: 1em;
   --code-font: monospace;
-  --link-color: #0277BD;
-  --link-color-hover: #0fa4fc;
-  --selection-background-color: #42b7fd;
+  --link-color: #CFB87C;
+  --link-color-hover: white;
+  --selection-background-color: #f1ebd9;
   --selection-color: #fff; }
 
 .reveal-viewport {
@@ -54,12 +54,12 @@ section.has-light-background, section.has-light-background h1, section.has-light
 
 .reveal ::selection {
   color: #fff;
-  background: #42b7fd;
+  background: #f1ebd9;
   text-shadow: none; }
 
 .reveal ::-moz-selection {
   color: #fff;
-  background: #42b7fd;
+  background: #f1ebd9;
   text-shadow: none; }
 
 .reveal .slides section,
@@ -244,18 +244,18 @@ section.has-light-background, section.has-light-background h1, section.has-light
  * LINKS
  *********************************************/
 .reveal a {
-  color: #0277BD;
+  color: #CFB87C;
   text-decoration: none;
   transition: color .15s ease; }
 
 .reveal a:hover {
-  color: #0fa4fc;
+  color: white;
   text-shadow: none;
   border: none; }
 
 .reveal .roll span:after {
   color: #fff;
-  background: #014771; }
+  background: #ba9a44; }
 
 /*********************************************
  * Frame helper
@@ -268,21 +268,21 @@ section.has-light-background, section.has-light-background h1, section.has-light
   transition: all .15s linear; }
 
 .reveal a:hover .r-frame {
-  border-color: #0277BD;
+  border-color: #CFB87C;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
 
 /*********************************************
  * NAVIGATION CONTROLS
  *********************************************/
 .reveal .controls {
-  color: #0277BD; }
+  color: #CFB87C; }
 
 /*********************************************
  * PROGRESS BAR
  *********************************************/
 .reveal .progress {
   background: rgba(0, 0, 0, 0.2);
-  color: #0277BD; }
+  color: #CFB87C; }
 
 /*********************************************
  * PRINT BACKGROUND

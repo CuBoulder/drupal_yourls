@@ -52,27 +52,41 @@
     				</div>
 				</section>
 				<section> 
-    				<h2> Features </h2>
-    				<ul style="line-height: 1.5em">
-        				<li> Roles </li>
-        				<li> Generate Random URLs </li>
+    				<h2> Feature Overview </h2>
+    				<ul style="line-height: 1.75em">
+        				<div class="fragment fade-in">
+        				<li class="highlight"> New Roles </li>
         				    <ul>
-            				    <li> Create a url like <span class="highlight" >https://sho.rt/dtj6h </span></li>
+            				    <li> Web Service Contributor </li>
+            				    <li> Web Service Admin </li>
+        				    </ul>
+        				</div>
+        				<div class="fragment fade-in">
+        				<li class="highlight"> Generate Random URLs </li>
+        				    <ul>
+            				    <li> Create a url like https://sho.rt/dtj6h</li>
             				    <li> Restrict these urls to *.colorado.edu domains </li>
         				    </ul>
-        				<li> Application process for creating custom URLs</li>
+        				</div>
+        				<div class="fragment fade-in">
+        				<li class="highlight"> Application process for creating custom URLs</li>
         				    <ul>
             				    <li> Non *.colorado.edu links or custom paths will require approval </li>
             				    <li> Admins will review applications and upon approval, links will automatically be created </li>
         				    </ul>
-                        <li> Block to show a list of generated short links</li>
+        				</div>
+        				<div class="fragment fade-in">
+                        <li class="highlight"> Block to show a list of generated short links</li>
                             <ul>
-                                <li> This block and be moved around to appear wherever admins would like </li>
+                                <li> This block can be moved to appear wherever admins would like </li>
                             </ul>
-                        <li> Automatically send emails to users about their application status</li>
+        				</div>
+        				<div class="fragment fade-in">
+                        <li class="highlight"> Automatically send emails to users about their application status</li>
                         <ul>
                             <li> This feature can optionally be turned off</li>
                         </ul>
+        				</div>
     				</ul>
                 </section>
 				<section>
@@ -86,7 +100,7 @@
     				<p> Web Service Admins can easily connect Drupal to YOURLs</p>
                 </section>
                 <section data-transition="fade-in slide-out"> 
-                    <img src="./assets/config-steps.gif" alt="config setup for YOURLs" style="width: 600px; height: auto; margin-top: 4em; "/>
+                    <img src="./assets/set-config.gif" alt="config setup for YOURLs" style="width: 600px; height: auto; margin-top: 4em; "/>
                 </section>
                 <section> 
                     <h2> Let's generate a random URL </h2>
@@ -97,6 +111,12 @@
                         <div>
                             <h2 class="align-left"> Now let's apply for a custom URL </h2>
                             <p class="align-left"> Users have to fill out this form requesting the details about the short url they want </p>
+                            <p class="align-left fragment fade-up"> This example shows a request to shorten this url from 
+                                <br>
+                                <br> <span class="highlight">https://cubuffs.evenue.net/cgi-bin/ncommerce3/SEGetEventList?groupCode=FB-DEP&linkID=colorado&shopperContext=&caller=&appCode= </span>
+                                <br>
+                                <br> to <span class="highlight">/tickets </span> 
+                            </p>
                         </div>
                         <div>
                             <img src="./assets/apply-url.png" alt="custom url form"/>
@@ -105,7 +125,8 @@
                 </section>
 				<section data-transition="slide-in fade-out">
     				<h2> Managing URL Applications </h2>
-    				<p> Once a user has requested a short URL, an admin will have to either Approve or Reject it. Emails will automatically be sent to applicants notifying them of their status. </p>
+    				<p> Once a user has requested a short URL, an admin will have to either <span class="highlight">Approve</span> or 
+        				<span class="highlight"> Reject </span> it. Emails will automatically be sent to applicants notifying them of their status. </p>
 				</section>
 				<section data-transition="fade-in slide-out" >
     				<img src="./assets/approve-app.gif" alt="gif of approving a short url" style="width: 600px; height: auto; margin-top: 4em; "/>
@@ -114,7 +135,10 @@
     				<h2> Time to visit the new link</h2>
     				<img src="./assets/visit-link.gif" alt="visit the link" style="width: 600px; height: auto; margin-top: 4em; "/>
 				</section>
-				<section> <h1> Thank you! </h1> </section>
+				<section> 
+    				<h1> Thank you! </h1>
+    				<h3> <a href="http://dev-linktest.pantheonsite.io/"> Visit the CU Short URLs dev site </a> </h3>
+                </section>
 			</div>
 		</div>
 
