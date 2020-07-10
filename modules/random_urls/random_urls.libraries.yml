@@ -1,0 +1,18 @@
+random-urls:
+  version: 1.x
+  footer: true
+  css:
+    theme:
+      randomURLs.css: {}
+  js:
+    randomURLs.js: {}
+short-url-results:
+  version: 1.x
+  footer: true
+  css:
+    theme:
+      shortURLResults.css: {}
+  js:
+    shortURLResults.js: {}
+  dependencies:
+    - core/jquery
