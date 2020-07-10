@@ -1,8 +1,0 @@
-<?php
-function custom_urls_theme($existing, $type, $theme, $path){
-  return [
-    'custom-urls-template' => [
-      'variables' => ['yourlsBase' => NULL, 'username' => NULL],
-    ],
-  ];
-}
