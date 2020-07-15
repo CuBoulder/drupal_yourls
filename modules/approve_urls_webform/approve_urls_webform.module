@@ -1,12 +1,14 @@
 <?php
 
-/*
-* Implements hook form alter
-*/
-
-function approve_urls_webform_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id){
-    if($form_id == 'custom_short_url_application'){
-        // add JS and CSS to the webform
-        $form['#attached']['library'][] = 'approve_urls_webform/approve-urls';
-    }
+/**
+ * Implements hook_mail().
+ */
+function approve_urls_mail($key, &$message, $params) {
+  $message['headers'] = $params["headers"];
+  $from = !empty(\Drupal::config('smtp.settings')->get('smtp_from')) ? \Drupal::config('smtp.settings')->get('smtp_from') : \Drupal::config('system.site')->get('mail');
+  if($key == 'app_update'){
+      $message['from'] = $from;
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params["body"];
+  }
 }
