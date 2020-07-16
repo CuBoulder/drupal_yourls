@@ -1,6 +1,10 @@
 langcode: en
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - approve_urls_webform
+_core:
+  default_config_hash: 8FPhBy35DF-DiXInKsjC3hAc6C6BzAEbsupa5XONe58
 open: null
 close: null
 weight: 0
@@ -12,18 +16,22 @@ title: 'Custom Short URL Application'
 description: 'An application form for users to request custom short urls'
 category: ''
 elements: |
+  '#attributes':
+    class:
+      - container
   long_url:
     '#type': webform_link
     '#title': 'Long URL'
+    '#required': true
     '#title__title': 'Site Title'
     '#title__placeholder': 'Site Name'
     '#title__required': true
     '#url__placeholder': 'Link to shorten'
     '#url__required': true
-    '#required': true
   short_url:
     '#type': textfield
     '#title': 'Short URL'
+    '#placeholder': 'Short URL'
     '#required': true
   reason_for_applying:
     '#type': textarea
@@ -34,13 +42,24 @@ elements: |
   application_status:
     '#type': radios
     '#title': 'Application Status'
-    '#disabled': true
     '#options':
       Pending: Pending
       Approved: Approved
       Rejected: Rejected
     '#default_value': Pending
-css: ''
+    '#access_create_roles':
+      - administrator
+      - yourls_admin
+    '#access_update_roles':
+      - administrator
+      - yourls_admin
+    '#access_view_roles':
+      - administrator
+      - yourls_admin
+css: |
+  #edit-long-url-url{ display: block; }
+  .form-item > .error { border: 2px solid red; }
+  label.form-required:after { color: red; content: '*'; }
 javascript: ''
 settings:
   ajax: false
@@ -137,11 +156,13 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: page
-  confirmation_title: ''
-  confirmation_message: ''
+  confirmation_type: inline
+  confirmation_title: 'Application Submitted'
+  confirmation_message: 'Thank you for submitting an application. We will be sending an email to notify you of your application status.'
   confirmation_url: ''
-  confirmation_attributes: {  }
+  confirmation_attributes:
+    class:
+      - 'container alert alert-success'
   confirmation_back: true
   confirmation_back_label: ''
   confirmation_back_attributes: {  }
@@ -169,23 +190,27 @@ settings:
   token_update: false
 access:
   create:
-    roles:
-      - anonymous
-      - authenticated
+    roles: {  }
     users: {  }
-    permissions: {  }
+    permissions:
+      - manage_url_applications
+      - create_url_application
   view_any:
     roles: {  }
     users: {  }
-    permissions: {  }
+    permissions:
+      - manage_url_applications
   update_any:
-    roles: {  }
+    roles:
+      - administrator
     users: {  }
-    permissions: {  }
+    permissions:
+      - manage_url_applications
   delete_any:
     roles: {  }
     users: {  }
-    permissions: {  }
+    permissions:
+      - manage_url_applications
   purge_any:
     roles: {  }
     users: {  }
@@ -205,7 +230,8 @@ access:
   administer:
     roles: {  }
     users: {  }
-    permissions: {  }
+    permissions:
+      - manage_url_applications
   test:
     roles: {  }
     users: {  }
@@ -214,5 +240,29 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  alter_form_validation:
+    id: approve_urls_webform_custom_validator
+    label: 'Alter Form Validation'
+    handler_id: alter_form_validation
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
+  delete_short_links_when_application_is_deleted:
+    id: approve_urls_delete_short_urls
+    label: 'Delete short links when application is deleted'
+    handler_id: delete_short_links_when_application_is_deleted
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
+  connect_to_yourls_when_applications_are_reviewed:
+    id: approve_urls_change_status
+    label: 'Connect to YOURLs when applications are reviewed'
+    handler_id: connect_to_yourls_when_applications_are_reviewed
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
 variants: {  }
