@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_mail().
+ */
+function approve_urls_mail($key, &$message, $params) {
+  $message['headers'] = $params["headers"];
+  $from = !empty(\Drupal::config('smtp.settings')->get('smtp_from')) ? \Drupal::config('smtp.settings')->get('smtp_from') : \Drupal::config('system.site')->get('mail');
+  if($key == 'app_update'){
+      $message['from'] = $from;
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params["body"];
+  }
+}

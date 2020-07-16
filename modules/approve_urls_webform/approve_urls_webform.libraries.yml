@@ -1,0 +1,8 @@
+approve-urls:
+  version: 1.x
+  footer: true
+  css:
+    theme:
+      approve_urls.css: {}
+  js:
+    approve_urls.js: {}
