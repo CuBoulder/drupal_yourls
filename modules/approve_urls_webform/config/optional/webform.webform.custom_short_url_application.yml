@@ -91,7 +91,7 @@ css: |
       border-radius: .25rem;
       transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   }
-  #edit-long-url-title.error, #edit-long-url-url.error { border: 2px solid red; }
+  #edit-long-url-title.error, #edit-long-url-url.error, #edit-short-url.error{ border: 2px solid red; }
   .form-item{ margin-top: 1em;}
   #edit-application-status{display: flex;}
   #edit-application-status > div{ margin-right: 1em;}

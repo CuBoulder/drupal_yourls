@@ -64,6 +64,13 @@ class ApproveURLsHandler extends WebformHandlerBase {
     if (empty($value) || is_array($value)) {
       return;
     }
+    // check for spaces and formatting
+    $regex = preg_match('/[!@#$%^&*():.<>?[\]\{\}\|\/[:blank:]]/', $value);
+    if($regex){
+        $formState->setErrorByName('short_url', $this->t('Please make sure the short url has no spaces, special chars, or is a link'));
+        return;
+    }
+    // check if te keyword already exists
     $config = \Drupal::config('drupal_yourls.settings');
     $yourls_base_url = $config->get('yourls_url');
     $yourls_secret = $config->get('yourls_secret'); 
