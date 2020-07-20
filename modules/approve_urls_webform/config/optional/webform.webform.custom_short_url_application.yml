@@ -22,6 +22,7 @@ elements: |
   long_url:
     '#type': webform_link
     '#title': 'Long URL'
+    '#title_display': ''
     '#required': true
     '#title__title': 'Site Title'
     '#title__placeholder': 'Site Name'
@@ -31,35 +32,69 @@ elements: |
   short_url:
     '#type': textfield
     '#title': 'Short URL'
+    '#description': 'Please enter a single word. Do not include leading slashes, spaces, or special characters. Dashes are allowed.'
     '#placeholder': 'Short URL'
     '#required': true
+    '#attributes':
+      class:
+        - form-control
   reason_for_applying:
     '#type': textarea
     '#title': 'Reason for Applying'
     '#rows': 4
     '#placeholder': 'In the case where multiple ask for the same short URL, we will consider the reason for applying'
     '#required': true
+    '#attributes':
+      class:
+        - form-control
   application_status:
     '#type': radios
     '#title': 'Application Status'
+    '#description': 'Approve or reject the creation of a new short link. Once the status has been changed from <strong>Pending</strong>, please DO NOT change it again!'
     '#options':
       Pending: Pending
       Approved: Approved
       Rejected: Rejected
     '#default_value': Pending
-    '#access_create_roles':
-      - administrator
-      - yourls_admin
-    '#access_update_roles':
-      - administrator
-      - yourls_admin
-    '#access_view_roles':
-      - administrator
-      - yourls_admin
+    '#access_create_roles': {  }
+    '#access_create_permissions':
+      - manage_url_applications
+    '#access_update_roles': {  }
+    '#access_update_permissions':
+      - manage_url_applications
+    '#access_view_roles': {  }
+    '#access_view_permissions':
+      - manage_url_applications
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#submit__attributes':
+      class:
+        - 'btn btn-primary'
+      style: 'margin-top: 2em;'
 css: |
   #edit-long-url-url{ display: block; }
-  .form-item > .error { border: 2px solid red; }
   label.form-required:after { color: red; content: '*'; }
+  #webform-submission-custom-short-url-application-add-form{margin-bottom: 3em; }
+  /* bootstrap css for form */
+  #edit-long-url-title, #edit-long-url-url{ 
+      width: 100%;
+      height: calc(1.5em + .75rem + 2px);
+      padding: .375rem .75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #ced4da;
+      border-radius: .25rem;
+      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  #edit-long-url-title.error, #edit-long-url-url.error { border: 2px solid red; }
+  .form-item{ margin-top: 1em;}
+  #edit-application-status{display: flex;}
+  #edit-application-status > div{ margin-right: 1em;}
 javascript: ''
 settings:
   ajax: false
@@ -214,7 +249,8 @@ access:
   purge_any:
     roles: {  }
     users: {  }
-    permissions: {  }
+    permissions:
+      - manage_url_applications
   view_own:
     roles: {  }
     users: {  }
