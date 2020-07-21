@@ -17,6 +17,7 @@
                 display: flex;
             }
             .flex-child{ max-width: 50%; overflow-wrap: break-word; margin-right: 1em; }
+            p{ overflow-wrap: break-word; }
         </style>
 	</head>
 	<body>
@@ -29,27 +30,26 @@
                 </section>
 				<section>
     				<div class="flexbox">
-    				<div class="flex-child">
-    				<p class="smaller align-left"> This service allows users to create short urls that match the university brand. We've created a new D9 site to interface with YOURLs, an open source link shortener. </p>
-    				<p class="fragment fade-up align-left smaller"> We can go from a url like this, <span class="highlight-gold" > https://www.colorado.edu/academics/programs/technology-arts-media </span>, <br>to something like <span class="highlight-gold">https://sho.rt/tam </span></p>
-    				</div>
-    				
-    				    <img src="./images/shorturls-mockup.png" alt="mockup" width="500px" height="auto" />
+        				<div class="flex-child">
+        				    <p class="smaller align-left"> This service allows users to create short urls that match the university brand. We've created a new D9 site to interface with YOURLs, an open source link shortener. </p>
+                            <p class="fragment fade-up align-left smaller"> We can go from a url like <span class="highlight-gold" > https://www.colorado.edu/academics/programs/technology-arts-media </span>, <br>to something like <span class="highlight-gold">https://sho.rt/tam </span></p>
+        				</div>
+        				<img src="./images/shorturls-mockup.png" alt="mockup" height="400px" width="intrinsic" />
     				</div>
 				</section>
 				<section> 
     				<h2> Feature Overview </h2>
     				<ul style="line-height: 1.5em">
         				<li> New Roles </li>
-        				<li> Generate random URLs like https://sho.rt/f56j from *.colorado.edu </li>
-        				<li> Application process for shortening non *colorado.edu URLs or creating custom paths </li>
+        				<li> Generate random URLs like https://sho.rt/f56j from any <span class="highlight-gold"> colorado </span> domain </li>
+        				<li> Applications for shortening non colorado domains or creating custom paths  </li>
         				<li> Block to show a list of existing short links </li>
         				<li> Automatic update emails sent to applicants </li>
     				</ul>
                 </section>
 				<section>
     				<h2> Roles </h2>
-    				<p> New users will receive the <span class="italics highlight-gold"> Web Service Contributor </span> role. This allows them to generate random and apply for custom URLs</p>
+    				<p> New users will receive the <span class="italics highlight-gold"> Web Service Contributor </span> role. This allows them to generate random URLs and apply for custom ones</p>
     				<p class="fragment fade-up"> The <span class="italics highlight-gold">Web Service Admin </span> role allows them to view stats about existing short URLs and manage applications </p>
     				<p class="fragment fade-up"> If users are abusing the service, admins can remove the <span class="italics highlight-gold"> Web Service Contributor </span> role, restricting their access </p>
 				</section>
@@ -58,7 +58,7 @@
     				<p> Web Service Admins can easily connect Drupal to YOURLs</p>
                 </section>
                 <section data-transition="fade-in slide-out"> 
-                    <img src="./images/set-config.gif" alt="config setup for YOURLs" style="width: 650px; height: auto; "/>
+                    <img src="./images/set-config.gif" alt="config setup for YOURLs" height="500px" width="auto"/>
                 </section>
                 <section> 
                     <h2> Let's generate a random URL </h2>
@@ -70,11 +70,11 @@
                         <div class="flex-child align-left smaller">
                             <p> Users will fill out this form with a few details about the URL they want to shorten</p>
                             <p> Ex) A user could ask to shorten: </p>
-                            <p class="highlight-gold smaller"> https://cubuffs.evenue.net/cgi-bin/ncommerce3/SEGetEventList?groupCode=FB-DEP&linkID=colorado&shopperContext=&caller=&appCode= </p>
+                            <p class="highlight-gold smaller"> https://cubuffs.com/sports/2017/7/28/ticket-information-request-form.aspx </p>
                             <p> to </p>
                             <p class="highlight-gold"> /tickets</p>
                         </div>
-                        <img src="./images/apply-url.png" alt="custom url form" height="500px" width="auto"/>
+                        <img src="./images/apply-url.png" alt="custom url form" height="400px" width="intrinsic"/>
                     </div>
                 </section>
 				<section data-transition="slide-in fade-out">
