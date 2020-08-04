@@ -4,8 +4,6 @@ random-urls:
   css:
     theme:
       randomURLs.css: {}
-  js:
-    randomURLs.js: {}
 short-url-results:
   version: 1.x
   footer: true
