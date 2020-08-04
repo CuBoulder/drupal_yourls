@@ -3,32 +3,31 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-		<title>CU Short URLs</title>
-
+		<title> CU Short URLs </title>
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
 		<link rel="stylesheet" href="dist/theme/ucb-dark.css" id="theme">
-
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
         <style>
-            .flexbox{
-                display: flex;
-            }
+            .flexbox{ display: flex; }
             .flex-child{ max-width: 50%; overflow-wrap: break-word; margin-right: 1em; }
             p{ overflow-wrap: break-word; }
         </style>
 	</head>
 	<body>
-    	<img id="background-image" src="images/cu-boulder-logo-text-white.svg" alt="cu footer logo" />
+    	<img id="background-image" src="images/cu-boulder-logo-text-white.svg" alt="CU footer logo" />
 		<div class="reveal">
 			<div class="slides">
 				<section> 
     				<h1> CU Short URLs </h1>
                     <p> A new service provided by SRC Web Team </p>
+                    <aside class="notes">
+                        <p>Hi everyone, thanks for giving your time to listen to this presentation. My name is Brooke and I'm a developer on the team. I'm here to propose a
+                        new service, CU Short URLS, which we think will be useful for students, staff, and content creators. </p>
+                    </aside>
                 </section>
-				<section>
+				<section> 
     				<div class="flexbox">
         				<div class="flex-child">
         				    <p class="smaller align-left"> This service allows users to create short urls that match the university brand. We've created a new D9 site to interface with YOURLs, an open source link shortener. </p>
@@ -36,33 +35,57 @@
         				</div>
         				<img src="./images/shorturls-mockup.png" alt="mockup" height="400px" width="intrinsic" />
     				</div>
+    				<aside class="notes">
+                        <p>We've all seen long, complex urls before. They're hard to remember and not particularly great to look at. Link shorteners can turn those long urls into a much shorter one. The short links are easy to remember and look better when added to a presentation, post, or site. This service will help unify content under the CU brand because the links will retain a CU domain instead of using an external one like bit.ly. [next] </p>
+                        <p> For example, we can turn a long url like this one, which is a link to the Technology, Arts, and Media program page into something like /tam. </p>
+    				</aside>
 				</section>
 				<section> 
     				<h2> Feature Overview </h2>
     				<ul style="line-height: 1.5em">
         				<li> New Roles </li>
-        				<li> Generate random URLs like https://sho.rt/f56j from any <span class="highlight-gold"> colorado </span> domain </li>
-        				<li> Applications for shortening non colorado domains or creating custom paths  </li>
+        				<li> Generate random URLs like https://sho.rt/f56j from any approved domain </li>
+        				<li> Applications for shortening non approved domains or creating custom paths  </li>
         				<li> Block to show a list of existing short links </li>
         				<li> Automatic update emails sent to applicants </li>
     				</ul>
+    				<aside class="notes">
+                        <p>The link shortener includes some features that will make managing it easier. We've added new roles and permissions, which I'll explain on the next slide. </p>
+                        <p> Next, this service can be used two ways. The first is to generate random short links like the ones created with bitly, however, those urls will be restricted to a list of allowed domains only. </p>
+                        <p> The second way is to create custom short links, which have either custom pathnames or shorten urls from non approved domains. Generating these links require users to fill out a short webform. The applications provide a way for admins to verify that the link is appropriate and to prevent collisions between keywords. Emails are also sent automatically to applicants about their application status. </p> 
+                        <p>Last, there's a block that shows a list of existing short links. </p>
+                    </aside>
                 </section>
 				<section>
     				<h2> Roles </h2>
     				<p> New users will receive the <span class="italics highlight-gold"> Web Service Contributor </span> role. This allows them to generate random URLs and apply for custom ones</p>
     				<p class="fragment fade-up"> The <span class="italics highlight-gold">Web Service Admin </span> role allows them to view stats about existing short URLs and manage applications </p>
     				<p class="fragment fade-up"> If users are abusing the service, admins can remove the <span class="italics highlight-gold"> Web Service Contributor </span> role, restricting their access </p>
+                    <aside class="notes">
+                        <p> We created two new roles for this site. When a user authenticates for the first time, they will receive the Web Service Contributor Role. They can generate random urls and apply for custom ones. [next] </p>
+                        <p> Web Service Admins can approve, reject, and delete applications. They will also have access to the YOURLs installation where they can view more stats about the short links. [next] </p>
+                        <p> Furthermore, if a user is abusing the service, an admin can remove the Web Service Contributor role, which will revoke their access. </p>
+                    </aside>
 				</section>
 				<section data-transition="slide-in fade-out"> 
     				<h2> Configuration </h2>
     				<p> Web Service Admins can easily connect Drupal to YOURLs</p>
+                    <aside class="notes">
+                        <p>The site uses the YOURLs API, so there's a little bit of setup to get the service fully running.</p>
+                    </aside>
                 </section>
                 <section data-transition="fade-in slide-out"> 
-                    <img src="./images/set-config.gif" alt="config setup for YOURLs" height="500px" width="auto"/>
+                    <img src="./images/set-config.gif" alt="config setup for YOURLs" height="450px" width="auto"/>
+                    <aside class="notes">
+                        <p> The configuration form needs the API endpoint and the key. There's also a series of inputs that list the allowed domains for creating random short links. Last, there's a checkbox which enables sending emails. Normally, it should be checked, but it can be useful to turn it off for testing. </p>
+                    </aside>
                 </section>
                 <section> 
                     <h2> Let's generate a random URL </h2>
                     <img src="./images/random-url.gif" alt="gif of creating a short url" />
+                    <aside class="notes">
+                        <p> Creating a random URL is very simple. Users will copy and paste a url into the form and a short link will be created! Remember, these URLs must come from an approved domain. Also, if a user tries to input a url that's already been shortened, the existing short link will be returned. This is because there can't be any duplicate long or short urls. </p>
+                    </aside>
                 </section>
                 <section>
                     <h2> Now let's Apply for a Custom URL </h2>
@@ -76,23 +99,38 @@
                         </div>
                         <img src="./images/apply-url.png" alt="custom url form" height="400px" width="intrinsic"/>
                     </div>
+                    <aside class="notes">
+                        <p>The application for creating custom urls is pretty short. Users will have to give the site name, long URL, keyword, and a reason for applying. For example, one could ask to shorten this long url, which links to the page for buying sporting event tickets, to just /tickets. After they submit the form, they'll get a confirmation message and will have to wait for their request to be approved. </p>
+                    </aside>
                 </section>
 				<section data-transition="slide-in fade-out">
     				<h2> Managing URL Applications </h2>
     				<p> Once a user has requested a short URL, an admin will either <span class="highlight-gold">Approve</span> or 
         				<span class="highlight-gold"> Reject </span> it. Emails are automatically sent to applicants notifying them of their status. </p>
+                    <aside class="notes">
+                        <p> Once a user has submitted an application, an admin will either approve or reject it. </p>
+                    </aside>
 				</section>
 				<section data-transition="fade-in slide-out" >
     				<img src="./images/approve-app.gif" alt="gif of approving a short url" style="width: 650px; height: auto; "/>
+                    <aside class="notes">
+                        <p> To approve an application, admins will edit the webform submission. At the bottom, they can change the Application Status to either Approved or Rejected. Applications that still need a decision will have the status Pending. Upon approval, a new short link will be created. If an admin deletes a submission, the short link associated with it will also be deleted (if it's been created). This also means that the keyword is free to use again. </p>
+                    </aside>
 				</section>
 				<section>
     				<h2> Time to visit the new link</h2>
     				<img src="./images/visit-link.gif" alt="visit the link" style="width: 650px; height: auto; "/>
+                    <aside class="notes">
+                       <p> Now that an admin has approved the application, we can visit it right away. </p> 
+                    </aside>
 				</section>
 				<section>
     				<section>
     				    <h1> Thank you! </h1>
                         <h3> <a href="http://dev-linktest.pantheonsite.io/"> Visit the CU Short URLs dev site </a> </h3>
+                    <aside class="notes">
+                        <p> Thank you, if anyone has questions about the service, I would be happy to try to answer them. </p>
+                    </aside>
     				</section>
     				<section>
         				<h3> Next Steps </h3>
@@ -113,6 +151,9 @@
                 				<li> boulder.st </li>
             				</ul>
         				</div>
+                    <aside class="notes">
+                        <p> The next step is to pick a domain. We have some ideas, but we welcome any suggestions. </p>
+                    </aside>
     				</section>
                 </section>
 			</div>
