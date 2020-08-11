@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+
+function approve_urls_webform_uninstall() {
+  // Remove the config file for the webform
+  $webform = \Drupal::entityTypeManager()->getStorage('webform')->load('custom_short_url_application');
+  if($webform){
+    $webform->delete();
+  }
+}

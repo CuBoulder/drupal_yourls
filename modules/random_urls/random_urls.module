@@ -2,10 +2,18 @@
 function random_urls_theme($existing, $type, $theme, $path){
   return [
     'random-urls-template' => [
-      'variables' => ['yourlsBase' => NULL, 'yourlsSecret'=> NULL, 'results' => NULL]
+      'variables' => ['domains' => NULL, 'form' => NULL]
     ],
     'short-urls-results-template' => [
       'variables' => ['results' => NULL, 'maxPages' => NULL]
     ]
   ];
+}
+
+function random_urls_page_attachments_alter(array &$page){
+    // add the Drupal Behaviors
+    if(\Drupal::service('path.current')->getPath() === '/random-urls'){
+        $domains = \Drupal::config('drupal_yourls.settings')->get('yourls_allowed_domains');
+        $page['#attached']['drupalSettings']['approvedDomains'] = $domains;
+    }
 }

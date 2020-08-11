@@ -1,3 +1,5 @@
 yourls_url: 'http://sho.rt/yourls-api.php'
 yourls_secret: '12345'
 yourls_send_email: 1
+yourls_allowed_domains:
+  url_0: 'colorado.edu'

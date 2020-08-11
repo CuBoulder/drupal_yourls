@@ -1,12 +1,11 @@
 {{ attach_library('random_urls/random-urls') }}
 
 <div class="container body-content">
-        <p> Getting a random short URL doesn't require any approval. The only restriction is that the URL must be from the colorado.edu domain. </p>
-        <div class='input-container'>
-            <input type="text" class="form-control" id="new-url" placeholder="Shorten my URL">
-            <button id='shorten-button' type='button' class='btn btn-primary'> Shorten! </button>
-        </div>
-        <div id='message-container' role="alert">
-            <!-- Mesage shows up here -->
-        </div>
+        <p> Generate a random short link like sho.rt/adt57 from a url from any of the following domains. This also includes subdomains from the ones listed below. </p>
+        <ul>
+            {% for i in domains %}
+            <li> {{i}} </li>
+            {% endfor %}
+        </ul>
+        {{form}}
 </div>
