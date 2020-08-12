@@ -1,14 +1,18 @@
 # drupal_yourls
 ### Summary
-This module provides integration with a YOURLs installation. The only modification to the install is to include the [yourls_api_delete](https://github.com/claytondaley/yourls-api-delete) plugin.
+This module provides integration with a YOURLs (>= v1.7.6) installation. There are a few plugins needed for this to all work properly 
+ - [yourls_api_delete](https://github.com/claytondaley/yourls-api-delete)
+ - [yourls-api-contract](https://github.com/brookestevens/yourls-api-contract)
+ - [youls-case-insensitive](https://github.com/adigitalife/yourls-case-insensitive)
 <br>
 <br>
-This module is designed to provide user role management and authentication. Users must be logged in to access any of the YOURLs features. Users can generate any random short URL ex. sho.rt/a67dg that comes from a colorado.edu domain or subdomain. If a user would like a custom URL, ex. sho.rt/short, they must apply for one. Applications can be reviewd by admins and can be approved or denied. On approval, a new short URL will be generated and an email will be sent to the user notifying them of their new URL. 
+This module is designed to provide user role management and authentication. Users must be logged in to access any of the YOURLs features. Users can generate any random short URL ex. sho.rt/a67dg that comes from an approved domain set in the config form. If a user would like a custom URL, ex. sho.rt/short, they must apply for one. Applications can be reviewd by admins and can be approved or denied. Last, automatic emails are sent to applicants about their application status.
 <br>
 #### Requirements
-This module should work with Drupal 8 and 9. You will also have to install the ````drupal/smtp```` module if the custom_urls and approve_urls modules are enabled. The smtp module is used for sending emails through SMTP. 
+This module should work with Drupal 8 and 9. You will also have to install the ````drupal/smtp```` module if the custom_urls and approve_urls modules are enabled.
 #### Permissions Added
 - Create Random Short URLS: Allows for users to create random short URLs
+- Request Custom Short URLs: Allows users to submit webforms for custom short url applications
 - Manage Short URL Applications: Allows users to approve/deny applications with a webform
 #### This package includes 3 modules
 - drupal_yourls : provides a config form to connect to the YOURLs API
