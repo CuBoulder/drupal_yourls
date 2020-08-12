@@ -8,6 +8,7 @@ This module provides integration with a YOURLs (>= v1.7.6) installation. There a
 <br>
 This module is designed to provide user role management and authentication. Users must be logged in to access any of the YOURLs features. Users can generate any random short URL ex. sho.rt/a67dg that comes from an approved domain set in the config form. If a user would like a custom URL, ex. sho.rt/short, they must apply for one. Applications can be reviewd by admins and can be approved or denied. Last, automatic emails are sent to applicants about their application status.
 <br>
+
 #### Requirements
 This module should work with Drupal 8 and 9. You will also have to install the ````drupal/smtp```` module if the custom_urls and approve_urls modules are enabled.
 #### Permissions Added
