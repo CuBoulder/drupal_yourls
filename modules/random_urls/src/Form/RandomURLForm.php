@@ -58,11 +58,8 @@ class RandomURLForm extends FormBase {
         $url = $form_state->getValue('url');
         $flag = false;
         
-        // validate that the domin comes from an apporved domain
+        // validate that the domain comes from an approved domain
         for($i =0; $i < count($this->domains); $i++){
-            $d = ($this->domains)["url_{$i}"];
-            $p = strpos($url, $d);
-//             $this->messenger()->addStatus( "$url, $d, $p" );
             if(strpos($url, ($this->domains)["url_{$i}"] ) !== false){
                 $flag = true;
             }
@@ -71,6 +68,7 @@ class RandomURLForm extends FormBase {
         if($flag === false){
             $form_state->setErrorByName('url', $this->t('Cannot create short link. Please make sure that the url comes from an approved domain.'));
         }
+        
         // validate that the URL exists
         $file_headers = @get_headers($url);
         if(!$file_headers) $flag = false;
