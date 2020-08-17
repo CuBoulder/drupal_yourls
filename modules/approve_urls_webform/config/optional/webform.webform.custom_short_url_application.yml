@@ -4,7 +4,7 @@ dependencies:
   module:
     - approve_urls_webform
 _core:
-  default_config_hash: 8FPhBy35DF-DiXInKsjC3hAc6C6BzAEbsupa5XONe58
+  default_config_hash: 6pfLuA5gQBm9s7m0Oec78ZHYSjQVngcIkneIhh4N8IQ
 open: null
 close: null
 weight: 0
@@ -22,18 +22,19 @@ elements: |
   long_url:
     '#type': webform_link
     '#title': 'Long URL'
-    '#title_display': ''
+    '#title_display': none
     '#required': true
     '#title__title': 'Site Title'
     '#title__placeholder': 'Site Name'
     '#title__required': true
     '#url__placeholder': 'Link to shorten'
+    '#url__description': 'The URL must not have been shortened before. If you receive an error, there is most likely a problem with this field. '
     '#url__required': true
   short_url:
     '#type': textfield
     '#title': 'Short URL'
-    '#description': 'Please enter a single word. Do not include leading slashes, spaces, or special characters. Dashes are allowed.'
-    '#placeholder': 'Short URL'
+    '#description': 'Please enter a single word. Do not include leading slashes, spaces, or special characters. Dashes are allowed. Keywords are case sensitive, so Apply is the same as apply.'
+    '#placeholder': Keyword
     '#required': true
     '#attributes':
       class:
@@ -42,7 +43,7 @@ elements: |
     '#type': textarea
     '#title': 'Reason for Applying'
     '#rows': 4
-    '#placeholder': 'In the case where multiple ask for the same short URL, we will consider the reason for applying'
+    '#placeholder': 'In the case where multiple people ask for the same short URL, we will consider the reason for applying'
     '#required': true
     '#attributes':
       class:
@@ -56,6 +57,20 @@ elements: |
       Approved: Approved
       Rejected: Rejected
     '#default_value': Pending
+    '#access_create_roles': {  }
+    '#access_create_permissions':
+      - manage_url_applications
+    '#access_update_roles': {  }
+    '#access_update_permissions':
+      - manage_url_applications
+    '#access_view_roles': {  }
+    '#access_view_permissions':
+      - manage_url_applications
+  email_message:
+    '#type': textarea
+    '#title': 'Email Message'
+    '#description': 'A custom message to send to recipients. If the request is approved, the new short link will be always be appended to the message.'
+    '#placeholder': 'Custom message (Optional)'
     '#access_create_roles': {  }
     '#access_create_permissions':
       - manage_url_applications
@@ -95,6 +110,7 @@ css: |
   .form-item{ margin-top: 1em;}
   #edit-application-status{display: flex;}
   #edit-application-status > div{ margin-right: 1em;}
+  
 javascript: ''
 settings:
   ajax: false
