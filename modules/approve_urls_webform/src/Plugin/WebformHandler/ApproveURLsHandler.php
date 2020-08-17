@@ -7,7 +7,6 @@ use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\Component\Utility\Html;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Webform validate handler.
@@ -52,13 +51,34 @@ class ApproveURLsHandler extends WebformHandlerBase {
                 $flag = false;
             }
         }
-        // TODO: check if the URL has already been shortened
-        
         // Strip trailing slash from URL if any
         if(substr($value['url'], -1) === '/'){
             $value['url'] = mb_substr($value['url'], 0, -1);
         }
-        $flag ? $formState->setValue('long_url', $value) : $formState->setErrorByName('long_url', $this->t('URL does not exist. Please enter a valid URL'));
+        if($flag === false){
+            $formState->setErrorByName('long_url', $this->t('URL does not exist. Please enter a valid URL'));
+        } 
+        // Finally, check if this long URL has been shortened before
+        $config = \Drupal::config('drupal_yourls.settings');
+        $yourls_base_url = $config->get('yourls_url');
+        $yourls_secret = $config->get('yourls_secret'); 
+        try{
+            $res = \Drupal::httpClient()->post($yourls_base_url, ['form_params' => [
+                'action' => 'contract',
+                'signature' => $yourls_secret,
+                'url' => $value['url'],
+                'format' => 'json'
+            ]]);
+            $res = json_decode($res->getBody(), true);
+            if($res['statusCode'] == 200 && (bool) $res['url_exists']){
+                $formState->setErrorByName('long_url', $this->t('This URL has already been shortened'));
+            }
+        }
+        catch(\Exception $e){
+            \Drupal::logger('approve_urls_webform')->notice($e->getMessage());
+        }
+        
+        $formState->setValue('long_url', $value);
     }
   
   /**
