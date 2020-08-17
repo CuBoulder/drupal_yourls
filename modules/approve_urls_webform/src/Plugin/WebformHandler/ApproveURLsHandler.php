@@ -42,6 +42,7 @@ class ApproveURLsHandler extends WebformHandlerBase {
         if (empty($value)) {
           return;
         }
+        // check if the URL goes to a 404
         $flag = true;
         $file_headers = @get_headers($value['url']);
         if(!$file_headers) return false;
@@ -50,6 +51,12 @@ class ApproveURLsHandler extends WebformHandlerBase {
                 // checks for redirects to a 404
                 $flag = false;
             }
+        }
+        // TODO: check if the URL has already been shortened
+        
+        // Strip trailing slash from URL if any
+        if(substr($value['url'], -1) === '/'){
+            $value['url'] = mb_substr($value['url'], 0, -1);
         }
         $flag ? $formState->setValue('long_url', $value) : $formState->setErrorByName('long_url', $this->t('URL does not exist. Please enter a valid URL'));
     }
@@ -70,20 +77,17 @@ class ApproveURLsHandler extends WebformHandlerBase {
         $formState->setErrorByName('short_url', $this->t('Please make sure the short url has no spaces, special chars, or is a link'));
         return;
     }
-    // check if te keyword already exists
+    // check if the keyword already exists
     $config = \Drupal::config('drupal_yourls.settings');
     $yourls_base_url = $config->get('yourls_url');
     $yourls_secret = $config->get('yourls_secret'); 
-    $yourls_api = "{$yourls_base_url}?signature={$yourls_secret}&format=json&action=url-stats&shorturl={$value}";
+    $yourls_api = "{$yourls_base_url}?signature={$yourls_secret}&format=json&action=expand&shorturl={$value}";
     
     try{
         $res = \Drupal::httpClient()->get($yourls_api);
         $res = json_decode($res->getBody(), true);
         if($res['statusCode'] == 200){
-            $formState->setErrorByName('short_url', $this->t('Keyword already exists. Please choose another one.')); // short url exists
-        }
-        else{
-            $formState->setValue('short_url', $value);
+            $formState->setErrorByName('short_url', $this->t('Keyword already exists. Please choose another one.')); // short url exists or is a reserved word
         }
     }
     catch(\Exception $e){
