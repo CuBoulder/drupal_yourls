@@ -1,12 +1,12 @@
 {{ attach_library('random_urls/short-url-results') }}
 <div class="container" >
 <h2> View all of the Short URLs </h2>
-<p> Here are the current short URLs that have been created. You may search for a short URL and use one that already exists. </p>
+<p> Here are the short URLs that have been created. You may search for a keyword or for a long URL to see if it's already been shortened. </p>
 <div id="short-urls-list">
 <div id='search-container'>
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button id="prev-button" value=0 type="button" class="btn btn-primary"> &#x227A; Prev </button>
-        <button id="next-button" value={{maxPages}} type="button" class="btn btn-primary"> Next &#x227B; </button>
+        <button id="prev-button" value=0 type="button" class="btn btn-primary" disabled > &#x227A; Prev </button>
+        <button id="next-button" value={{maxPages}} type="button" class="btn btn-primary" {% if results|length < 10 %} disabled {% endif %}> Next &#x227B; </button>
     </div>
     <input type='text' class="form-control" placeholder='Search for a keyword or URL' id='search-keyword' />
     <button id='search-button' type="button" class="btn btn-primary"> Search </button>
