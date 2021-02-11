@@ -5,6 +5,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\RedirectMiddleware;
 
 
 class RandomURLForm extends FormBase {
@@ -55,33 +56,31 @@ class RandomURLForm extends FormBase {
     * {@inheritdoc}
     */
     public function validateForm(array &$form, FormStateInterface $form_state){
-        $url = $form_state->getValue('url');
-        $flag = false;
-        
-        // validate that the domain comes from an approved domain
-        for($i =0; $i < count($this->domains); $i++){
-            if(strpos($url, ($this->domains)["url_{$i}"] ) !== false){
-                $flag = true;
-            }
-        }
-        
-        if($flag === false){
-            $form_state->setErrorByName('url', $this->t('Cannot create short link. Please make sure that the url comes from an approved domain.'));
-        }
-        
-        // validate that the URL exists
-        $file_headers = @get_headers($url);
-        if(!$file_headers) $flag = false;
-        else{
-            for($i=0; $i< count($file_headers); $i++){
-                if($file_headers[$i] == 'HTTP/1.1 404 Not Found'){
-                    $flag = false;
+        $url = $form_state->getValue('url'); $from_approved_domain = true;
+        // validate that the URL exists and comes from an approved domain
+        // If the URL is a redirect, then verify that the start and end URLs are from an approved domain
+        try{
+            $res = \Drupal::httpClient()->get($url, ['allow_redirects' => ['track_redirects' => true, 'max' => 5] ]);
+            $res = $res->getHeader( RedirectMiddleware::HISTORY_HEADER );
+            $end_url = end($res); // has the redirected URL, if it's an empty string then the URL wasn't redirected
+            \Drupal::logger('random_urls')->notice($end_url);
+            for($i =0; $i < count($this->domains); $i++){
+                if(strpos($url, ($this->domains)["url_{$i}"] ) === false ){
+                    $from_approved_domain = false;
+                    break;
+                }
+                if( !empty($end_url) && strpos($end_url, ($this->domains)["url_{$i}"] ) === false ){
+                    $from_approved_domain = false;
                     break;
                 }
             }
         }
-        if($flag === false){
+        catch(RequestException | ClientException $e){
+            \Drupal::logger('random_urls')->error($e->getMessage() );
             $form_state->setErrorByName('url', $this->t('Cannot create short link. Please make sure that this URL exists.'));
+        }
+        if(!$from_approved_domain){
+            $form_state->setErrorByName('url', $this->t('Please make sure this URL comes from an approved domain.'));
         }
     }
 
@@ -89,22 +88,24 @@ class RandomURLForm extends FormBase {
     public function handleNewRandomURL(array &$form, FormStateInterface $form_state) {
         return $form['random_url'];
     }
-    
+
     /*
     * {@inheritdoc}
     */
     public function submitForm(array &$form, FormStateInterface $form_state) {
         $url = $form_state->getValue('url');
         try{
+            // remove a trailing slash if any
+            if(substr($url, -1) === '/'){
+                $url = mb_substr($url, 0, -1);
+            }
             $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=shorturl&format=json&url={$url}";
-            // \Drupal::logger('random_urls')->notice("url : $yourls_api");
-            $res = \Drupal::httpClient()->get($yourls_api); //call the API
-            \Drupal::logger('random_urls')->notice("Adding a new random URL. View it on your YOURLs installation");
+            $res = \Drupal::httpClient()->get($yourls_api);
             $res = json_decode($res->getBody());
             $form['random_url']['#markup'] = "<div role='alert' class='alert alert-success mt-2'> Your new short link is: {$res->shorturl} </div>";
         }
         catch(RequestException | ClientException $e){
-            \Drupal::logger('random_urls')->error('Malformed URL or request resulted in a 404');
+            \Drupal::logger('random_urls')->error( $e->getMessage() );
             $form['random_url']['#markup'] = "<div role='alert' class='alert alert-danger mt-2'> Something went wrong trying to create this short link. Please try again. </div>";
         }
     }
