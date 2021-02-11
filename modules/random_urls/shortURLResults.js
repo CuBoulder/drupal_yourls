@@ -1,11 +1,8 @@
-(function($){
+(function($, drupalSettings){
     console.log("%cSKO BUFFS!","color: #CFB87C; font-size: 2.75em;");
     $(function(){
         // Handle the search feature
-        let search = null;
-        let params = new URLSearchParams(window.location.search).get('page');
-        let page = 1;
-        
+        let search = null; let page = 1;
         function renderTable(url){
             fetch(url)
             .then(res => {
@@ -17,8 +14,7 @@
                 }
             })
             .then(res => {
-                $('#url-results').empty(); //clear the table
-                // re-draw it
+                $('#url-results').empty();
                 for (i in res.links){
                     $('#url-results').append(
                         `<tr>
@@ -28,6 +24,9 @@
                         </tr>`
                     );
                 }
+                if(Object.keys(res.links).length < 10){
+                    $('#url-results').append(`<tr> <td></td><td> End of Results </td> <td></td> </tr>`);
+                }
             })
             .catch(err => {
                 console.error(err);
@@ -36,18 +35,26 @@
             });
         }
         
-        document.getElementById('next-button').addEventListener('click', event => {
+        document.getElementById('next-button').addEventListener('click', function(){
             page++;
-            let maxPages = Math.ceil(+event.target.value / 10);
-            if(page > maxPages) page = maxPages; //value on the button is the total number of short URLs
-            renderTable(`/get-all-short-urls?page=${page}`);
+            let maxPages = Math.ceil(+this.value / 10);
+            if(page >= maxPages){
+                page = maxPages; //value on the button is the total number of short URLs
+                this.disabled = true;
+            }
+            document.getElementById('prev-button').disabled = false;
+            renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?page=${page}`);
         });
-        document.getElementById('prev-button').addEventListener('click', event => {
+        document.getElementById('prev-button').addEventListener('click', function(){
             page--;
-            if(page < 1) page = 1;
-            renderTable(`/get-all-short-urls?page=${page}`);
+            if(page <= 1){
+                page = 1;
+                this.disabled = true;
+            }
+            document.getElementById('next-button').disabled = false;
+            renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?page=${page}`);
         });
-        
+
         // handle the search form
         document.getElementById('search-keyword').addEventListener('blur', e => {search = e.target.value});
         document.getElementById('search-button').addEventListener('click', event => {
@@ -55,7 +62,7 @@
                 alert("Please enter a keyword to search for");
                 return;
             }
-            renderTable(`/get-all-short-urls?keyword=${search}`);
+            renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?keyword=${search}`);
         });
     });
-})(jQuery);
+})(jQuery, drupalSettings);
