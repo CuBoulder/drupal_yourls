@@ -32,7 +32,8 @@ class ShortURLsBlock extends BlockBase {
             return ['links' => $res['links'], 'max_pages' => $res['stats']['total_links']];
         }
         catch(RequestException | ClientException $e){
-            \Drupal::logger('random_urls')->error("Error with request, malformed URL or request resulted in a 404");
+            \Drupal::logger('random_urls')->error($e->getMessage() );
+            return ['links' => [], 'max_pages' => 0 ];
         }
     }
     /**
@@ -45,13 +46,12 @@ class ShortURLsBlock extends BlockBase {
     * {@inheritdoc}
     */
     public function build() {
-        $req = \Drupal::request();
         $results = $this->getResults();
         return [
             '#theme' => 'short-urls-results-template',
             '#results' => $results['links'],
             '#maxPages' => $results['max_pages'],
-//             '#cache' => ['max-age' => 0]
+            '#cache' => ['max-age' => 0]
         ];
     }
 
