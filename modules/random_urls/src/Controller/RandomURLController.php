@@ -32,8 +32,8 @@ class RandomURLController{
                 return new Response(json_encode(['links' => $res['links']]), Response::HTTP_OK, ['content-type' => 'application/json']);
             }
             catch(RequestException | ClientException $e){
-                \Drupal::logger('random_urls')->error("Error with request, malformed URL or request resulted in a 404");
-                return new Response(json_encode(['message' => 'Error in request or request resulted in a 404']), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+                \Drupal::logger('random_urls')->error($e->getMessage());
+                return new Response(json_encode(['message' => $e->getMessage()]), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
             }
         }
         // get data about a specific short url
@@ -47,16 +47,22 @@ class RandomURLController{
             }
             catch(RequestException | ClientException $e){
                 \Drupal::logger('random_urls')->error($e->getMessage());
-                return new Response(json_encode(['message' => 'Error in request or request resulted in a 404']), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+                return new Response(json_encode(['message' => $e->getMessage()]), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
             }
         }
         // get data about a URL
         else if($search === 'url'){
+            $_url = $req->query->get('keyword');
+            // remove trailing slash if any
+            if(substr($_url, -1) === '/'){
+                $_url = mb_substr($_url, 0, -1);
+            }
             try{
+                // check if this URL has already been shortened
                 $res = \Drupal::httpClient()->post($this->yourls_base_url, ['form_params' => [
                     'action' => 'contract',
                     'signature' => $this->yourls_secret,
-                    'url' => $req->query->get('keyword'),
+                    'url' => $_url,
                     'format' => 'json'
                 ]]);
                 $res = json_decode($res->getBody(), true);
@@ -69,7 +75,7 @@ class RandomURLController{
             }
             catch(Exception $e){
                 \Drupal::logger('random_urls')->error($e->getMessage());
-                return new Response(json_encode(['message' => 'Error in request or request resulted in a 404']), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
+                return new Response(json_encode(['message' => $e->getMessage() ]), Response::HTTP_INTERNAL_SERVER_ERROR, ['content-type' => 'application/json']);
             }
         }
         else{
