@@ -7,7 +7,6 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RedirectMiddleware;
 
-
 class RandomURLForm extends FormBase {
     private $yourls_base_url, $yourls_secret, $domains;
     function __construct(){

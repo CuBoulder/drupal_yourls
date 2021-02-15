@@ -2,7 +2,7 @@
     console.log("%cSKO BUFFS!","color: #CFB87C; font-size: 2.75em;");
     $(function(){
         // Handle the search feature
-        let search = null; let page = 1;
+        let search = null; let page = 1; let maxPages = 1;
         function renderTable(url){
             fetch(url)
             .then(res => {
@@ -14,17 +14,19 @@
                 }
             })
             .then(res => {
+                const {links, stats} = res.links;
+                maxPages = +stats.total_links;
                 $('#url-results').empty();
-                for (i in res.links){
+                for (i in links){
                     $('#url-results').append(
                         `<tr>
-                        <th scope="row"> <a href= ${res.links[i].shorturl} target="_blank"> ${res.links[i].shorturl} </a></th>
-                        <td>${res.links[i].url}</td>
-                        <td>${res.links[i].clicks}</td>
+                        <th scope="row"> <a href= ${links[i].shorturl} target="_blank"> ${links[i].shorturl} </a></th>
+                        <td>${links[i].url}</td>
+                        <td>${links[i].clicks}</td>
                         </tr>`
                     );
                 }
-                if(Object.keys(res.links).length < 10){
+                if(Object.keys(links).length < 10){
                     $('#url-results').append(`<tr> <td></td><td> End of Results </td> <td></td> </tr>`);
                 }
             })
@@ -37,9 +39,9 @@
         
         document.getElementById('next-button').addEventListener('click', function(){
             page++;
-            let maxPages = Math.ceil(+this.value / 10);
-            if(page >= maxPages){
-                page = maxPages; //value on the button is the total number of short URLs
+            let lastPage = Math.ceil(maxPages / 10);
+            if(page >= lastPage){
+                page = lastPage;
                 this.disabled = true;
             }
             document.getElementById('prev-button').disabled = false;
@@ -64,5 +66,8 @@
             }
             renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?keyword=${search}`);
         });
+
+        // render the inital table of results
+        renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?page=1`);
     });
 })(jQuery, drupalSettings);

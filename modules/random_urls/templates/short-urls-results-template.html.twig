@@ -4,16 +4,15 @@
 <p> Here are the short URLs that have been created. You may search for a keyword or for a long URL to see if it's already been shortened. </p>
 <div id="short-urls-list">
 <div id='search-container'>
-    <div class="btn-group" role="group" aria-label="Basic example">
+    <div class="btn-group" role="group" aria-label="Short link pager">
         <button id="prev-button" value=0 type="button" class="btn btn-primary" disabled > &#x227A; Prev </button>
-        <button id="next-button" value={{maxPages}} type="button" class="btn btn-primary" {% if results|length < 10 %} disabled {% endif %}> Next &#x227B; </button>
+        <button id="next-button" value=0 type="button" class="btn btn-primary"> Next &#x227B; </button>
     </div>
     <input type='text' class="form-control" placeholder='Search for a keyword or URL' id='search-keyword' />
     <button id='search-button' type="button" class="btn btn-primary"> Search </button>
 </div>
 <div>
-{# List the table results #}
-{% if results|length > 0 %}
+{# Render Empty table. The JS will fill in the results #}
     <table class="table">
         <thead>
             <tr>
@@ -23,18 +22,7 @@
             </tr>
         </thead>
     <tbody id="url-results">
-    {% for i in results %}
-        <tr>
-            <th scope="row"> <a href= {{i.shorturl}} target="_blank"> {{i.shorturl}} </a></th>
-            <td>{{i.url}}</td>
-            <td>{{i.clicks}}</td>
-        </tr>
-    {% endfor %}
     </tbody>
     </table>
-    {# If there are no results #}
-    {% else %}
-        <p> No Results </p>
-    {% endif %}
 </div>
 <div>

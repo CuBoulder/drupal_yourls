@@ -5,7 +5,7 @@ function random_urls_theme($existing, $type, $theme, $path){
       'variables' => ['domains' => NULL, 'form' => NULL]
     ],
     'short-urls-results-template' => [
-      'variables' => ['results' => NULL, 'maxPages' => NULL]
+      'variables' => []
     ]
   ];
 }
