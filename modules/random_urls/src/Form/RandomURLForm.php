@@ -55,22 +55,19 @@ class RandomURLForm extends FormBase {
     * {@inheritdoc}
     */
     public function validateForm(array &$form, FormStateInterface $form_state){
-        $url = $form_state->getValue('url'); $from_approved_domain = true;
+        $url = $form_state->getValue('url'); $from_approved_domain = false;
         // validate that the URL exists and comes from an approved domain
         // If the URL is a redirect, then verify that the start and end URLs are from an approved domain
         try{
             $res = \Drupal::httpClient()->get($url, ['allow_redirects' => ['track_redirects' => true, 'max' => 5] ]);
             $res = $res->getHeader( RedirectMiddleware::HISTORY_HEADER );
             $end_url = end($res); // has the redirected URL, if it's an empty string then the URL wasn't redirected
-            \Drupal::logger('random_urls')->notice($end_url);
             for($i =0; $i < count($this->domains); $i++){
-                if(strpos($url, ($this->domains)["url_{$i}"] ) === false ){
-                    $from_approved_domain = false;
-                    break;
+                if(strpos($url, ($this->domains)["url_{$i}"] )){
+                    $from_approved_domain = true;
                 }
-                if( !empty($end_url) && strpos($end_url, ($this->domains)["url_{$i}"] ) === false ){
-                    $from_approved_domain = false;
-                    break;
+                if( !empty($end_url) && strpos($end_url, ($this->domains)["url_{$i}"] )){
+                    $from_approved_domain = true;
                 }
             }
         }
