@@ -20,7 +20,7 @@
                 for (i in links){
                     $('#url-results').append(
                         `<tr>
-                        <th scope="row"> <a href= ${links[i].shorturl} target="_blank"> ${links[i].shorturl} </a></th>
+                        <th scope="row"> <a href= ${links[i].shorturl}> ${links[i].shorturl} </a></th>
                         <td>${links[i].url}</td>
                         <td>${links[i].clicks}</td>
                         </tr>`
