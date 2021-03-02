@@ -43,7 +43,7 @@ class RandomURLController{
                 $res = \Drupal::httpClient()->get($yourls_api);
                 $res = json_decode($res->getBody(), true);
                 // format the result
-                return new Response(json_encode(['links' => [ 'link_1' => $res['link']] ]), Response::HTTP_OK, ['content-type' => 'application/json']);
+                return new Response(json_encode(['links' => ['links' => [ 'link_1' => $res['link']]] ]), Response::HTTP_OK, ['content-type' => 'application/json']);
             }
             catch(RequestException | ClientException $e){
                 \Drupal::logger('random_urls')->error($e->getMessage());
@@ -67,7 +67,7 @@ class RandomURLController{
                 ]]);
                 $res = json_decode($res->getBody(), true);
                 if((bool) $res['url_exists']){
-                    return new Response(json_encode(['links' => $res['links'] ]), Response::HTTP_OK, ['content-type' => 'application/json']);
+                    return new Response(json_encode(['links' => ['links' => $res['links']] ]), Response::HTTP_OK, ['content-type' => 'application/json']);
                 }
                 else{
                     throw new Exception('URL does not exist');

@@ -15,7 +15,9 @@
             })
             .then(res => {
                 const {links, stats} = res.links;
-                maxPages = +stats.total_links;
+                if(stats !== undefined){
+                    maxPages = +stats.total_links;
+                }
                 $('#url-results').empty();
                 for (i in links){
                     $('#url-results').append(
@@ -45,7 +47,7 @@
                 this.disabled = true;
             }
             document.getElementById('prev-button').disabled = false;
-            renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?page=${page}`);
+            renderTable(`${drupalSettings.path.baseUrl}get-all-short-urls?page=${page}`);
         });
         document.getElementById('prev-button').addEventListener('click', function(){
             page--;
@@ -54,7 +56,7 @@
                 this.disabled = true;
             }
             document.getElementById('next-button').disabled = false;
-            renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?page=${page}`);
+            renderTable(`${drupalSettings.path.baseUrl}get-all-short-urls?page=${page}`);
         });
 
         // handle the search form
@@ -64,10 +66,10 @@
                 alert("Please enter a keyword to search for");
                 return;
             }
-            renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?keyword=${search}`);
+            renderTable(`${drupalSettings.path.baseUrl}get-all-short-urls?keyword=${search}`);
         });
 
         // render the inital table of results
-        renderTable(`${drupalSettings.path.baseUrl}/get-all-short-urls?page=1`);
+        renderTable(`${drupalSettings.path.baseUrl}get-all-short-urls?page=1`);
     });
 })(jQuery, drupalSettings);
