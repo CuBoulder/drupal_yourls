@@ -28,12 +28,11 @@ elements: |
     '#title__placeholder': 'Site Name'
     '#title__required': true
     '#url__placeholder': 'Link to shorten'
-    '#url__description': 'The URL must not have been shortened before. If you receive an error, there is most likely a problem with this field. '
     '#url__required': true
   short_url:
     '#type': textfield
     '#title': 'Short URL'
-    '#description': 'Please enter a single word. Do not include leading slashes, spaces, or special characters. Dashes are allowed. Keywords are case sensitive, so Apply is the same as apply.'
+    '#description': 'Please enter a single word. Do not include leading slashes, spaces, or special characters. Dashes are allowed. Keywords are not case sensitive'
     '#placeholder': Keyword
     '#required': true
     '#attributes':

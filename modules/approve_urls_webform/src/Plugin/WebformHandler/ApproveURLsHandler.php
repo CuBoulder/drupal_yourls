@@ -56,7 +56,7 @@ class ApproveURLsHandler extends WebformHandlerBase {
         }
         catch(\Exception $e){
             \Drupal::logger('approve_urls_webform')->notice($e->getMessage());
-            $formState->setErrorByName('long_url', $this->t('This URL does not exist. Please make sure the URL is publicly accessible.'));
+            $formState->setErrorByName('long_url][url', $this->t('This URL does not exist. Please make sure the URL is publicly accessible.'));
         }
         // Also check if this long URL has been shortened before
         try{
@@ -68,13 +68,12 @@ class ApproveURLsHandler extends WebformHandlerBase {
             ]]);
             $res = json_decode($res->getBody(), true);
             if($res['statusCode'] == 200 && (bool) $res['url_exists']){
-                $formState->setErrorByName('long_url', $this->t('This URL has already been shortened'));
+                $formState->setErrorByName('long_url][url', $this->t('This URL has already been shortened'));
             }
         }
         catch(\Exception $e){
             // recieved a 404 which means that the URL hasn't been shortened yet
             \Drupal::logger('approve_urls_webform')->notice($e->getMessage());
-            $formState->setValue('long_url', $value);
         }
     }
   
