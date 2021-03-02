@@ -27,6 +27,8 @@ class RandomURLForm extends FormBase {
     * {@inheritdoc}
     */
     public function buildForm(array $form, FormStateInterface $form_state) {
+        // Inline form errors module doesn't show the message properly
+        $form['#disable_inline_form_errors'] = TRUE;
         $form['url'] = array(
           '#type' => 'textfield',
           '#placeholder' => $this->t('Shorten my URL'),
