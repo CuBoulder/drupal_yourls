@@ -3,7 +3,7 @@
 /**
  * Implements hook_mail().
  */
-function approve_urls_mail($key, &$message, $params) {
+function approve_urls_webform_mail($key, &$message, $params) {
   $message['headers'] = $params["headers"];
   $from = !empty(\Drupal::config('smtp.settings')->get('smtp_from')) ? \Drupal::config('smtp.settings')->get('smtp_from') : \Drupal::config('system.site')->get('mail');
   if($key == 'app_update'){
