@@ -39,8 +39,7 @@ class DeleteApplicationHandler extends WebformHandlerBase {
    private function deleteYOURLsLink(WebformSubmissionInterface $webform_submission){
         $config = \Drupal::config('drupal_yourls.settings');
         $yourls_base_url = $config->get('yourls_url');
-        $yourls_secret = $config->get('yourls_secret'); 
-        
+        $yourls_secret = $config->get('yourls_secret');
         $keyword = $webform_submission->getElementData('short_url');
         try{
             // delete the node from YOURLS (if exists)

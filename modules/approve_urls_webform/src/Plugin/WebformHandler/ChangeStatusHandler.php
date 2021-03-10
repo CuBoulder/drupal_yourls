@@ -50,7 +50,7 @@ class ChangeStatusHandler extends WebformHandlerBase {
     // Email function
     private function sendEmail(string $message){
         $mailManager = \Drupal::service('plugin.manager.mail');
-//         \Drupal::logger('approve_urls_webform')->notice("sending email with message: {$message}");
+        //  \Drupal::logger('approve_urls_webform')->notice("sending email with message: {$message}");
         // creating an email template with the key 'approve_urls' and hook_mail()
         $params = [
             "subject" => "CU Short URLs Application Status",
@@ -85,7 +85,6 @@ class ChangeStatusHandler extends WebformHandlerBase {
         $yourls_base_url = $config->get('yourls_url');
         $yourls_secret = $config->get('yourls_secret'); 
         $send_email_flag = $config->get('yourls_send_email');
-        
         try{
             $client = \Drupal::httpClient();
             // YOURLs POST body must be form data
@@ -98,7 +97,6 @@ class ChangeStatusHandler extends WebformHandlerBase {
                 'keyword' => $keyword
             ]]);
             $res = json_decode($res->getBody(), true);
-        
             \Drupal::messenger()->addMessage("Created new short URL: {$res['shorturl']}", "status");
             if($send_email_flag === 1){
                 // Email the user about their application status
