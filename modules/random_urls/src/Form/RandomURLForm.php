@@ -1,21 +1,30 @@
 <?php
-    
+
 namespace Drupal\random_urls\Form;
+
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RedirectMiddleware;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class RandomURLForm extends FormBase {
-    private $yourls_base_url, $yourls_secret, $domains;
-    function __construct(){
+    private $domains;
+    protected $yourls_connector;
+    function __construct( $yourls_connector ){
         $config = \Drupal::config('drupal_yourls.settings');
-        $this->yourls_base_url = $config->get('yourls_url');
-        $this->yourls_secret = $config->get('yourls_secret'); 
-        $this->domains = $config->get('yourls_allowed_domains'); 
+        $this->domains = $config->get('yourls_allowed_domains');
+        $this->yourls_connector = $yourls_connector;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function create(ContainerInterface $container) {
+        return new static($container->get('drupal_yourls.yourls_connector'));
+    }
+
     /**
     * {@inheritdoc}
     */
@@ -53,7 +62,7 @@ class RandomURLForm extends FormBase {
         return $form;
     }
   
-    /*
+    /**
     * {@inheritdoc}
     */
     public function validateForm(array &$form, FormStateInterface $form_state){
@@ -87,24 +96,21 @@ class RandomURLForm extends FormBase {
         return $form['random_url'];
     }
 
-    /*
+    /**
     * {@inheritdoc}
     */
     public function submitForm(array &$form, FormStateInterface $form_state) {
         $url = $form_state->getValue('url');
-        try{
-            // remove a trailing slash if any
-            if(substr($url, -1) === '/'){
-                $url = mb_substr($url, 0, -1);
-            }
-            $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&action=shorturl&format=json&url={$url}";
-            $res = \Drupal::httpClient()->get($yourls_api);
-            $res = json_decode($res->getBody());
-            $form['random_url']['#markup'] = "<div role='alert' class='alert alert-success mt-2'> Your new short link is: {$res->shorturl} </div>";
+        // remove a trailing slash if any
+        if(substr($url, -1) === '/'){
+            $url = mb_substr($url, 0, -1);
         }
-        catch(RequestException | ClientException $e){
-            \Drupal::logger('random_urls')->error( $e->getMessage() );
+        $res = ($this->yourls_connector)->shorturl($url);
+        if(isset($res['error'])){
             $form['random_url']['#markup'] = "<div role='alert' class='alert alert-danger mt-2'> Something went wrong trying to create this short link. Please try again. </div>";
+        }
+        else{
+            $form['random_url']['#markup'] = "<div role='alert' class='alert alert-success mt-2'> Your new short link is: {$res['shorturl']} </div>";
         }
     }
 }

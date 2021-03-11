@@ -1,0 +1,4 @@
+services:
+  drupal_yourls.yourls_connector:
+    class: Drupal\drupal_yourls\Services\DrupalYourlsServiceProvider
+    arguments: []

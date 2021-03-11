@@ -4,10 +4,7 @@ namespace Drupal\approve_urls_webform\Plugin\WebformHandler;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
-use Drupal\Component\Utility\Html;
 use Drupal\webform\WebformSubmissionInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Webform validate handler.
@@ -23,34 +20,17 @@ use Symfony\Component\HttpFoundation\Request;
  * )
  */
 class DeleteApplicationHandler extends WebformHandlerBase {
-    use StringTranslationTrait;
-
-  /**
-   * {@inheritdoc}
-   */
-   public function preDelete(WebformSubmissionInterface $webform_submission) {
-       // delete the URL from YOURLs if it exists
-       $this->deleteYOURLsLink($webform_submission);
-   }
-   
-  /**
-   * Delete keyword
-   */
-   private function deleteYOURLsLink(WebformSubmissionInterface $webform_submission){
-        $config = \Drupal::config('drupal_yourls.settings');
-        $yourls_base_url = $config->get('yourls_url');
-        $yourls_secret = $config->get('yourls_secret');
+    /**
+     * {@inheritdoc}
+     */
+    public function preDelete(WebformSubmissionInterface $webform_submission) {
+        // delete the URL from YOURLs if it exists
         $keyword = $webform_submission->getElementData('short_url');
-        try{
-            // delete the node from YOURLS (if exists)
-            $yourls_api = "{$yourls_base_url}?signature={$yourls_secret}&action=delete&shorturl={$keyword}&format=json";
-            $res = \Drupal::httpClient()->get($yourls_api);
-            $res = json_decode($res->getBody(), true);
+        $yourls_connector = \Drupal::service('drupal_yourls.yourls_connector');
+        $res = $yourls_connector->delete( $keyword );
+        if( !isset($res['error']) ){
             \Drupal::logger('approve_urls')->notice("Successfully deleted short URL: {$keyword} from YOURLs.");
-        }
-        catch(\Exception $e){
-            // If it gets here, the short URL to delete doesn't exist in YOURLS - returns a 404
-            \Drupal::logger('approve_urls')->notice($e->getMessage());
+            \Drupal::messenger()->addMessage("Successfully deleted short URL: {$keyword} from YOURLs.", "status");
         }
     }
 }
