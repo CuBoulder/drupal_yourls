@@ -23,16 +23,14 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  */
 class ApproveURLsHandler extends WebformHandlerBase {
     use StringTranslationTrait;
-    private $yourls_base_url;
-    private $yourls_secret;
+    private $yourls_connector;
+
 
     /**
     * {@inheritdoc}
     */
     public function validateForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-        $config = \Drupal::config('drupal_yourls.settings');
-        $this->yourls_base_url = $config->get('yourls_url');
-        $this->yourls_secret = $config->get('yourls_secret');
+        $this->yourls_connector;
         $this->validateURL($form_state);
         $this->validateKeyword($form_state);
         // Last, format the URL before submitting form by removing trailing slash if any
@@ -59,21 +57,12 @@ class ApproveURLsHandler extends WebformHandlerBase {
             $formState->setErrorByName('long_url][url', $this->t('This URL does not exist. Please make sure the URL is publicly accessible.'));
         }
         // Also check if this long URL has been shortened before
-        try{
-            $res = \Drupal::httpClient()->post($this->yourls_base_url, ['form_params' => [
-                'action' => 'contract',
-                'signature' => $this->yourls_secret,
-                'url' => $value['url'],
-                'format' => 'json'
-            ]]);
-            $res = json_decode($res->getBody(), true);
+        $yourls_connector = \Drupal::service('drupal_yourls.yourls_connector');
+        $res = $yourls_connector->contract( $value['url'] );
+        if(!isset($res['error'])){
             if($res['statusCode'] == 200 && (bool) $res['url_exists']){
                 $formState->setErrorByName('long_url][url', $this->t('This URL has already been shortened'));
             }
-        }
-        catch(\Exception $e){
-            // recieved a 404 which means that the URL hasn't been shortened yet
-            \Drupal::logger('approve_urls_webform')->notice($e->getMessage());
         }
     }
   
@@ -93,17 +82,12 @@ class ApproveURLsHandler extends WebformHandlerBase {
         return;
     }
     // check if the keyword already exists
-    $yourls_api = "{$this->yourls_base_url}?signature={$this->yourls_secret}&format=json&action=expand&shorturl={$value}";
-    try{
-        $res = \Drupal::httpClient()->get($yourls_api);
-        $res = json_decode($res->getBody(), true);
+    $yourls_connector = \Drupal::service('drupal_yourls.yourls_connector');
+    $res = $yourls_connector->expand( $value );
+    if(!isset($res['error'])){
         if($res['statusCode'] == 200){
             $formState->setErrorByName('short_url', $this->t('Keyword already exists. Please choose another one.')); // short url exists or is a reserved word
         }
-    }
-    catch(\Exception $e){
-        // recieved a 404 - this means that the short URL doesnt exist yet
-        \Drupal::logger('approve_urls_webform')->notice($e->getMessage());
     }
   }
 }

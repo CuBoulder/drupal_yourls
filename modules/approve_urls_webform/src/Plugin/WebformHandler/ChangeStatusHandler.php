@@ -80,23 +80,14 @@ class ChangeStatusHandler extends WebformHandlerBase {
     /**
     * approve a submission
     */
-    private function approveURL(array $longURL, string $keyword, string $message) {
-        $config = \Drupal::config('drupal_yourls.settings');
-        $yourls_base_url = $config->get('yourls_url');
-        $yourls_secret = $config->get('yourls_secret'); 
-        $send_email_flag = $config->get('yourls_send_email');
-        try{
-            $client = \Drupal::httpClient();
-            // YOURLs POST body must be form data
-            $res = $client->post($yourls_base_url, ['form_params' => [
-                'action' => 'shorturl',
-                'signature' => $yourls_secret,
-                'url' => urldecode($longURL['url']),
-                'format' => 'json',
-                'title' => $longURL['title'],
-                'keyword' => $keyword
-            ]]);
-            $res = json_decode($res->getBody(), true);
+    private function approveURL(array $longURL, string $keyword, string $message) { 
+        $send_email_flag = \Drupal::config('drupal_yourls.settings')->get('yourls_send_email');
+        $yourls_connector = \Drupal::service('drupal_yourls.yourls_connector');
+        $res = $yourls_connector->shorturl($longURL['url'], $keyword, $longURL['title']);
+        if(isset($res['error'])){
+            \Drupal::logger('approve_urls_webform')->error($res['message']);
+        }
+        else{
             \Drupal::messenger()->addMessage("Created new short URL: {$res['shorturl']}", "status");
             if($send_email_flag === 1){
                 // Email the user about their application status
@@ -107,12 +98,8 @@ class ChangeStatusHandler extends WebformHandlerBase {
                 $message = "{$message} Here is your new short URL: {$res['shorturl']}";
                 $this->sendEmail($message);
             }
-            
-            // TODO: batch reject all other applications with the same requested keyword
         }
-        catch(Exception $e){
-            \Drupal::logger('approve_urls_webform')->error($e->getMessage());
-        }
+        // TODO: batch reject all other applications with the same requested keyword
     }
     
     /**
