@@ -1,0 +1,10 @@
+name: YOURLS REST API
+type: module
+description: Enable a REST API to interact with yourls
+package: CU URL Shortener
+core: 8.x
+core_version_requirement: ^8 || ^9
+dependencies:
+  - drupal_yourls:drupal_yourls
+  - drupal_yourls:random_urls
+  - key_auth:key_auth
