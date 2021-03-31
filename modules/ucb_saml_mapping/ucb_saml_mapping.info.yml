@@ -1,6 +1,0 @@
-name: CU SAML Mapping
-type: module
-description: Map SAML attributes to the user account page
-package: CU URL Shortener
-core: 8.x
-core_version_requirement: ^8 || ^9
