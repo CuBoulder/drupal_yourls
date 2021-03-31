@@ -4,7 +4,7 @@ dependencies:
   module:
     - approve_urls_webform
 _core:
-  default_config_hash: 6pfLuA5gQBm9s7m0Oec78ZHYSjQVngcIkneIhh4N8IQ
+  default_config_hash: 91eNw_zdOGZWqSDW8Dr1_6OJj6OLz55Z9n0zv8GpEhM
 open: null
 close: null
 weight: 0
@@ -15,101 +15,8 @@ id: custom_short_url_application
 title: 'Custom Short URL Application'
 description: 'An application form for users to request custom short urls'
 category: ''
-elements: |
-  '#attributes':
-    class:
-      - container
-  long_url:
-    '#type': webform_link
-    '#title': 'Long URL'
-    '#title_display': none
-    '#required': true
-    '#title__title': 'Site Title'
-    '#title__placeholder': 'Site Name'
-    '#title__required': true
-    '#url__placeholder': 'Link to shorten'
-    '#url__required': true
-  short_url:
-    '#type': textfield
-    '#title': 'Short URL'
-    '#description': 'Please enter a single word. Do not include leading slashes, spaces, or special characters. Dashes are allowed. Keywords are not case sensitive'
-    '#placeholder': Keyword
-    '#required': true
-    '#attributes':
-      class:
-        - form-control
-  reason_for_applying:
-    '#type': textarea
-    '#title': 'Reason for Applying'
-    '#rows': 4
-    '#placeholder': 'In the case where multiple people ask for the same short URL, we will consider the reason for applying'
-    '#required': true
-    '#attributes':
-      class:
-        - form-control
-  application_status:
-    '#type': radios
-    '#title': 'Application Status'
-    '#description': 'Approve or reject the creation of a new short link. Once the status has been changed from <strong>Pending</strong>, please DO NOT change it again!'
-    '#options':
-      Pending: Pending
-      Approved: Approved
-      Rejected: Rejected
-    '#default_value': Pending
-    '#access_create_roles': {  }
-    '#access_create_permissions':
-      - manage_url_applications
-    '#access_update_roles': {  }
-    '#access_update_permissions':
-      - manage_url_applications
-    '#access_view_roles': {  }
-    '#access_view_permissions':
-      - manage_url_applications
-  email_message:
-    '#type': textarea
-    '#title': 'Email Message'
-    '#description': 'A custom message to send to recipients. If the request is approved, the new short link will be always be appended to the message.'
-    '#placeholder': 'Custom message (Optional)'
-    '#access_create_roles': {  }
-    '#access_create_permissions':
-      - manage_url_applications
-    '#access_update_roles': {  }
-    '#access_update_permissions':
-      - manage_url_applications
-    '#access_view_roles': {  }
-    '#access_view_permissions':
-      - manage_url_applications
-  actions:
-    '#type': webform_actions
-    '#title': 'Submit button(s)'
-    '#submit__attributes':
-      class:
-        - 'btn btn-primary'
-      style: 'margin-top: 2em;'
-css: |
-  #edit-long-url-url{ display: block; }
-  label.form-required:after { color: red; content: '*'; }
-  #webform-submission-custom-short-url-application-add-form{margin-bottom: 3em; }
-  /* bootstrap css for form */
-  #edit-long-url-title, #edit-long-url-url{ 
-      width: 100%;
-      height: calc(1.5em + .75rem + 2px);
-      padding: .375rem .75rem;
-      font-size: 1rem;
-      font-weight: 400;
-      line-height: 1.5;
-      color: #495057;
-      background-color: #fff;
-      background-clip: padding-box;
-      border: 1px solid #ced4da;
-      border-radius: .25rem;
-      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  }
-  #edit-long-url-title.error, #edit-long-url-url.error, #edit-short-url.error{ border: 2px solid red; }
-  .form-item{ margin-top: 1em;}
-  #edit-application-status{display: flex;}
-  #edit-application-status > div{ margin-right: 1em;}
-  
+elements: "'#attributes':\n  class:\n    - container\nlong_url:\n  '#type': webform_link\n  '#title': 'Long URL'\n  '#title_display': none\n  '#required': true\n  '#title__title': 'Site Title'\n  '#title__placeholder': 'Site Name'\n  '#title__required': true\n  '#url__placeholder': 'Link to shorten'\n  '#url__required': true\nshort_url:\n  '#type': textfield\n  '#title': 'Short URL'\n  '#description': 'Please enter a single word. Do not include leading slashes, spaces, or special characters. Dashes are allowed. Keywords are not case sensitive'\n  '#placeholder': Keyword\n  '#required': true\n  '#attributes':\n    class:\n      - form-control\nreason_for_applying:\n  '#type': textarea\n  '#title': 'Reason for Applying'\n  '#rows': 4\n  '#placeholder': 'In the case where multiple people ask for the same short URL, we will consider the reason for applying'\n  '#required': true\n  '#attributes':\n    class:\n      - form-control\napplication_status:\n  '#type': radios\n  '#title': 'Application Status'\n  '#description': 'Approve or reject the creation of a new short link. Once the status has been changed from <strong>Pending</strong>, please DO NOT change it again!'\n  '#options':\n    Pending: Pending\n    Approved: Approved\n    Rejected: Rejected\n  '#default_value': Pending\n  '#access_create_roles': {  }\n  '#access_create_permissions':\n    - manage_url_applications\n  '#access_update_roles': {  }\n  '#access_update_permissions':\n    - manage_url_applications\n  '#access_view_roles': {  }\n  '#access_view_permissions':\n    - manage_url_applications\nemail_message:\n  '#type': textarea\n  '#title': 'Email Message'\n  '#description': 'A custom message to send to recipients. If the request is approved, the new short link will be always be appended to the message.'\n  '#placeholder': 'Custom message (Optional)'\n  '#access_create_roles': {  }\n  '#access_create_permissions':\n    - manage_url_applications\n  '#access_update_roles': {  }\n  '#access_update_permissions':\n    - manage_url_applications\n  '#access_view_roles': {  }\n  '#access_view_permissions':\n    - manage_url_applications\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__attributes':\n    class:\n      - 'btn btn-primary'\n    style: 'margin-top: 2em;'\n"
+css: "#edit-long-url-url{ display: block; }\nlabel.form-required:after { color: red; content: '*'; }\n#webform-submission-custom-short-url-application-add-form{margin-bottom: 3em; }\n/* bootstrap css for form */\n#edit-long-url-title, #edit-long-url-url{ \n    width: 100%;\n    height: calc(1.5em + .75rem + 2px);\n    padding: .375rem .75rem;\n    font-size: 1rem;\n    font-weight: 400;\n    line-height: 1.5;\n    color: #495057;\n    background-color: #fff;\n    background-clip: padding-box;\n    border: 1px solid #ced4da;\n    border-radius: .25rem;\n    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;\n}\n#edit-long-url-title.error, #edit-long-url-url.error, #edit-short-url.error{ border: 2px solid red; }\n.form-item{ margin-top: 1em;}\n#edit-application-status{display: flex;}\n#edit-application-status > div{ margin-right: 1em;}\n"
 javascript: ''
 settings:
   ajax: false
@@ -208,7 +115,7 @@ settings:
   draft_pending_multiple_message: ''
   confirmation_type: inline
   confirmation_title: 'Application Submitted'
-  confirmation_message: 'Thank you for submitting an application. We will be sending an email to notify you of your application status.'
+  confirmation_message: 'Thank you for submitting an application. We will send an email to notify you of your application status within 1-3 business days.'
   confirmation_url: ''
   confirmation_attributes:
     class:
@@ -238,6 +145,10 @@ settings:
   results_customize: false
   token_view: false
   token_update: false
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  token_delete: false
+  serial_disabled: false
 access:
   create:
     roles: {  }
@@ -295,6 +206,7 @@ handlers:
   alter_form_validation:
     id: approve_urls_webform_custom_validator
     label: 'Alter Form Validation'
+    notes: ''
     handler_id: alter_form_validation
     status: true
     conditions: {  }
@@ -303,6 +215,7 @@ handlers:
   delete_short_links_when_application_is_deleted:
     id: approve_urls_delete_short_urls
     label: 'Delete short links when application is deleted'
+    notes: ''
     handler_id: delete_short_links_when_application_is_deleted
     status: true
     conditions: {  }
@@ -311,9 +224,47 @@ handlers:
   connect_to_yourls_when_applications_are_reviewed:
     id: approve_urls_change_status
     label: 'Connect to YOURLs when applications are reviewed'
+    notes: ''
     handler_id: connect_to_yourls_when_applications_are_reviewed
     status: true
     conditions: {  }
     weight: 0
     settings: {  }
+  email:
+    id: email
+    label: Email
+    notes: 'Send email to admin when application is submitted'
+    handler_id: email
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: 41f9781d.msteams.colorado.edu@amer.teams.ms
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      subject: 'New Short URL Application Submission'
+      body: "<p>Submitted on {{ webform_token('[webform_submission:created]', webform_submission, [], options) }}</p>\r\n<p>Submitted by: {{ webform_token('[webform_submission:user]', webform_submission, [], options) }}</p>\r\n<p> Please login into the site to update the application status </p>\r\n"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: true
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+      parameters: {  }
 variants: {  }
