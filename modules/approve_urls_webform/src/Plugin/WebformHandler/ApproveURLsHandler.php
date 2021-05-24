@@ -73,6 +73,10 @@ class ApproveURLsHandler extends WebformHandlerBase {
         $formState->setErrorByName('short_url', $this->t('Please make sure the short url has no spaces, special chars, or is a link'));
         return;
     }
+    // force all lowercase
+    $value = strtolower($value);
+    $formState->setValue('short_url', $value);
+
     // check if the keyword already exists
     $yourls_connector = \Drupal::service('drupal_yourls.yourls_connector');
     $res = $yourls_connector->expand( $value );
