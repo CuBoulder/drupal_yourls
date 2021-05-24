@@ -56,14 +56,6 @@ class ApproveURLsHandler extends WebformHandlerBase {
             \Drupal::logger('approve_urls_webform')->notice($e->getMessage());
             $formState->setErrorByName('long_url][url', $this->t('This URL does not exist. Please make sure the URL is publicly accessible.'));
         }
-        // Also check if this long URL has been shortened before
-        $yourls_connector = \Drupal::service('drupal_yourls.yourls_connector');
-        $res = $yourls_connector->contract( $value['url'] );
-        if(!isset($res['error'])){
-            if($res['statusCode'] == 200 && (bool) $res['url_exists']){
-                $formState->setErrorByName('long_url][url', $this->t('This URL has already been shortened'));
-            }
-        }
     }
   
   /**
